@@ -1,0 +1,82 @@
+/* Skreytum Hús – forsíða (hönnunartillaga) */
+body{margin:0;background:#F6F1E9}
+a{color:inherit;text-decoration:none}
+a:hover{color:inherit}
+.site{container-type:inline-size;container-name:site;font-family:'Jost',system-ui,sans-serif;font-weight:400;color:#2A2623;background:#F6F1E9;-webkit-font-smoothing:antialiased;overflow-x:clip}
+.site *{box-sizing:border-box}
+.serif{font-family:'Cormorant Garamond',Georgia,serif}
+.wrap{max-width:1360px;margin:0 auto;padding-inline:clamp(20px,4.2cqi,64px)}
+.eyebrow{font-size:11px;letter-spacing:.28em;text-transform:uppercase;font-weight:500}
+.ulink{background:linear-gradient(currentColor,currentColor) 0 100%/0% 1px no-repeat;padding-bottom:3px;transition:background-size .6s cubic-bezier(.2,.7,.2,1)}
+.ulink:hover,.card:hover .ulink{background-size:100% 1px}
+.ph{overflow:hidden;background:#E3D8C8;position:relative}
+.ph img{display:block;width:100%;height:100%;object-fit:cover;transition:transform 1.6s cubic-bezier(.2,.7,.2,1)}
+.card:hover .ph img,.tile:hover .ph img{transform:scale(1.045)}
+.btn{display:inline-flex;align-items:center;gap:12px;min-height:48px;padding:0 28px;border-radius:999px;font-size:13px;letter-spacing:.14em;text-transform:uppercase;font-weight:500;transition:background .35s,color .35s,border-color .35s;cursor:pointer}
+.btn-dark{background:#2A2623;color:#F6F1E9}
+.btn-dark:hover{background:#4A413A;color:#F6F1E9}
+.btn-line{border:1px solid currentColor}
+.btn-line:hover{background:#2A2623;color:#F6F1E9;border-color:#2A2623}
+.btn-light{border:1px solid rgba(246,241,233,.5);color:#F6F1E9}
+.btn-light:hover{background:#F6F1E9;color:#2A2623}
+.chip{font:inherit;font-size:13px;letter-spacing:.06em;min-height:44px;padding:0 20px;border-radius:999px;border:1px solid #CFC3B3;background:transparent;color:#2A2623;cursor:pointer;transition:all .3s}
+.chip:hover{border-color:#2A2623}
+.chip[aria-pressed="true"]{background:#2A2623;color:#F6F1E9;border-color:#2A2623}
+.icon-btn{display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;border-radius:999px;border:0;background:transparent;color:#2A2623;cursor:pointer;transition:background .3s}
+.icon-btn:hover{background:#ECE3D6}
+.navlinks a{font-size:13px;letter-spacing:.12em;text-transform:uppercase}
+.menu-btn{display:none}
+.hero{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:clamp(32px,5cqi,88px);align-items:center}
+.split{display:grid;grid-template-columns:minmax(0,6fr) minmax(0,5fr);gap:clamp(32px,6cqi,104px);align-items:center}
+.split-r{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);gap:clamp(32px,6cqi,104px);align-items:center}
+.grid4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:56px 28px}
+.cats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:20px}
+.tvgrid{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:clamp(28px,4cqi,64px);align-items:start}
+.insta{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:12px}
+.archive{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:clamp(40px,6cqi,104px)}
+.years{display:grid;grid-template-columns:repeat(auto-fill,minmax(118px,1fr));gap:10px}
+.foot{display:grid;grid-template-columns:minmax(0,2fr) repeat(3,minmax(0,1fr));gap:40px}
+.inset{position:absolute;left:-9%;bottom:-56px;width:38%;border:10px solid #F6F1E9;box-shadow:0 30px 60px -30px rgba(42,38,35,.35)}
+.clamp3{display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.ep{display:grid;grid-template-columns:84px minmax(0,1fr);gap:18px;align-items:center;width:100%;text-align:left;font:inherit;color:#EDE6DC;background:transparent;border:0;border-top:1px solid rgba(237,230,220,.16);padding:18px 0;cursor:pointer;transition:opacity .3s}
+.ep:hover{opacity:1}
+.ep-off{opacity:.62}
+.ep-on .ep-title{color:#F6F1E9}
+.play{width:88px;height:88px;border-radius:999px;background:rgba(246,241,233,.92);color:#2A2623;display:flex;align-items:center;justify-content:center;transition:transform .5s cubic-bezier(.2,.7,.2,1)}
+.tvlink:hover .play{transform:scale(1.08)}
+.tile .ph::after{content:"";position:absolute;inset:0;background:linear-gradient(to top,rgba(26,22,19,.78) 0%,rgba(26,22,19,.35) 38%,rgba(26,22,19,0) 66%)}
+.igtile .ph::after{content:"";position:absolute;inset:0;background:rgba(42,38,35,0);transition:background .4s}
+.igtile:hover .ph::after{background:rgba(42,38,35,.28)}
+.marquee{display:flex;width:max-content;animation:marq 60s linear infinite}
+@keyframes marq{to{transform:translateX(-50%)}}
+@keyframes rise{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:none}}
+@keyframes reveal{from{clip-path:inset(100% 0 0 0)}to{clip-path:inset(0 0 0 0)}}
+.rise{animation:rise 1.1s cubic-bezier(.2,.7,.2,1) both}
+.d1{animation-delay:.08s}.d2{animation-delay:.22s}.d3{animation-delay:.36s}.d4{animation-delay:.5s}.d5{animation-delay:.8s}
+.reveal{animation:reveal 1.5s cubic-bezier(.7,0,.2,1) both}
+.field{font:inherit;font-size:16px;flex:1 1 auto;min-width:0;height:52px;padding:0 20px;border:1px solid #CFC3B3;border-radius:999px;background:#FBF8F3;color:#2A2623}
+.field:focus{outline:2px solid #2A2623;outline-offset:2px}
+.yr{display:flex;justify-content:space-between;align-items:baseline;padding:12px 16px;border:1px solid #DDD2C3;border-radius:2px;font-size:14px;transition:all .3s}
+.yr:hover{background:#2A2623;color:#F6F1E9;border-color:#2A2623}
+.yr span{font-size:12px;color:#6E6258}
+.yr:hover span{color:#CFC3B3}
+@container site (max-width: 960px){
+.navlinks{display:none !important}
+.menu-btn{display:inline-flex}
+.hero,.split,.split-r,.tvgrid,.archive{grid-template-columns:minmax(0,1fr)}
+.grid4{grid-template-columns:repeat(2,minmax(0,1fr));gap:36px 14px}
+.cats{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.insta{grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+.foot{grid-template-columns:repeat(2,minmax(0,1fr))}
+.foot-brand{grid-column:1 / -1}
+.inset{left:auto;right:-6px;bottom:-36px;width:42%;border-width:6px}
+.hide-s{display:none !important}
+.card-title{font-size:21px !important}
+.meta{letter-spacing:.14em !important}
+.topbar{font-size:10.5px !important;letter-spacing:.1em !important}
+.tile-name{font-size:28px !important}
+}
+@container site (min-width: 961px){.mobile-menu{display:none !important}}
+@media (prefers-reduced-motion: reduce){.rise,.reveal,.marquee{animation:none}.ph img{transition:none}}
+
+[hidden]{display:none !important}
