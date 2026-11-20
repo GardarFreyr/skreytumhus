@@ -1,0 +1,4 @@
+# Hönnunartillaga (demo) — á ekki að birtast í leitarvélum.
+# Lifandi vefurinn er https://www.skreytumhus.is/
+User-agent: *
+Disallow: /
