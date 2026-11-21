@@ -132,7 +132,7 @@ function MobileMenu({ open, onClose }: { open: boolean; onClose: () => void }) {
     >
       <div className="flex h-full flex-col px-5 pb-8 sm:px-8">
         <div className="flex h-[72px] items-center justify-between">
-          <Wordmark compact />
+          <Wordmark compact className="h-[42px]" />
           <button type="button" onClick={onClose} className="grid size-12 place-items-center rounded-full hover:bg-cream" aria-label="Loka valmynd" autoFocus>
             <X size={22} strokeWidth={1.5} aria-hidden />
           </button>

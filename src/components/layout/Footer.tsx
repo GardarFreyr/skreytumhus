@@ -10,7 +10,7 @@ export function Footer() {
       <div className="wrap pt-20 pb-10 lg:pt-28">
         <div className="grid gap-14 lg:grid-cols-12">
           <div className="lg:col-span-5">
-            <div className="text-ivory [&>span]:items-start"><Wordmark light /></div>
+            <Link to="/" title="Forsíða" className="inline-block"><Wordmark light className="h-[64px] lg:h-[84px]" /></Link>
             <p className="mt-6 max-w-sm text-[15px] leading-relaxed text-ivory/70">
               Íslenskt heimilisblogg um skreytingar og breytingar, fegrun heimilisins og almennt þá hluti sem gleðja. Skrifað af Soffíu Dögg síðan í september 2010.
             </p>

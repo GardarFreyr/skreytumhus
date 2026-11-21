@@ -1,18 +1,22 @@
 /**
- * Orðmerki: „Skreytum Hús…“ — þrípunkturinn er úr upprunalega merkinu og
- * einkennir líka skrifstíl Soffíu, svo hann fær að halda sér.
+ * Merki Skreytum Hús (upprunalega merkið frá Soffíu, bakgrunnur fjarlægður).
+ * `light` er útgáfa fyrir dökkan bakgrunn: svarti textinn verður fílabeinshvítur og útlínur detta út.
+ * Hlutfall myndarinnar er 823 × 266.
  */
-export function Wordmark({ compact = false, light = false }: { compact?: boolean; light?: boolean }) {
+export function Wordmark({ compact = false, light = false, className }: { compact?: boolean; light?: boolean; className?: string }) {
+  const file = light ? 'logo-light' : 'logo'
+  const size = className ?? (compact ? 'h-[44px] lg:h-[52px]' : 'h-[52px] lg:h-[80px]')
   return (
-    <span className="flex flex-col items-center leading-none">
-      <span className={`font-display font-medium tracking-[0.005em] transition-[font-size] duration-500 ${compact ? 'text-[26px] lg:text-[30px]' : 'text-[30px] lg:text-[44px]'}`}>
-        Skreytum Hús<span className={light ? 'text-sage' : 'text-taupe'}>…</span>
-      </span>
-      {!compact && (
-        <span className={`mt-2 hidden pl-[0.4em] text-[9.5px] uppercase tracking-[0.4em] lg:block ${light ? 'text-ivory/70' : 'text-muted'}`}>
-          Allt um heimilið · síðan 2010
-        </span>
-      )}
-    </span>
+    <picture className="block">
+      <source srcSet={`/brand/${file}.webp`} type="image/webp" />
+      <img
+        src={`/brand/${file}.png`}
+        alt="Skreytum Hús"
+        width={823}
+        height={266}
+        decoding="async"
+        className={`block w-auto max-w-none transition-[height] duration-500 ${size}`}
+      />
+    </picture>
   )
 }
