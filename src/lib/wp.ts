@@ -122,6 +122,7 @@ export async function fetchArticles(q: ArticleQuery = {}, signal?: AbortSignal):
     order: q.order ?? 'desc',
     categories: q.categories?.join(','),
     tags: q.tags?.join(','),
+    tax_relation: q.categories?.length && q.tags?.length ? q.taxRelation : undefined,
     search: q.search,
     include: q.include?.join(','),
     exclude: q.exclude?.join(','),

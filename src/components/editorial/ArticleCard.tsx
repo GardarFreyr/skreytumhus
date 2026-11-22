@@ -32,10 +32,18 @@ export function Meta({ article, light = false, compact = false }: { article: Art
   const cat = compact ? undefined : article.categories[0]
   return (
     // Ein lína alltaf: flokkur styttist („…“) ef plássið er lítið, svo titlar í sömu röð byrji á sama stað.
-    <p className={`flex h-6 min-w-0 items-center gap-x-2.5 overflow-hidden whitespace-nowrap text-[11px] font-medium uppercase tracking-[0.2em] ${light ? 'text-ivory/85' : 'text-muted'}`}>
+    // @container: í mjóum spjöldum (t.d. þrír dálkar á spjaldtölvu) birtist styttri dagsetning svo ekkert klippist.
+    <p className={`@container flex h-6 min-w-0 items-center gap-x-2.5 overflow-hidden whitespace-nowrap text-[11px] font-medium uppercase tracking-[0.2em] ${light ? 'text-ivory/85' : 'text-muted'}`}>
       {cat && <span className={`min-w-0 truncate ${light ? '' : 'text-taupe-ink'}`} title={cat.name}>{cat.name}</span>}
       {cat && <span aria-hidden className="shrink-0">·</span>}
-      <time dateTime={article.date} className="shrink-0">{compact ? formatShortDate(article.date) : formatDate(article.date)}</time>
+      {compact ? (
+        <time dateTime={article.date} className="shrink-0">{formatShortDate(article.date)}</time>
+      ) : (
+        <time dateTime={article.date} className="shrink-0">
+          <span className={article.sponsored ? 'hidden @[22rem]:inline' : 'hidden @[15rem]:inline'}>{formatDate(article.date)}</span>
+          <span className={article.sponsored ? '@[22rem]:hidden' : '@[15rem]:hidden'}>{formatShortDate(article.date)}</span>
+        </time>
+      )}
       {article.sponsored && (
         <span className={`shrink-0 rounded-full border px-2 py-0.5 tracking-[0.14em] ${light ? 'border-ivory/50' : 'border-stone'}`}>Samstarf</span>
       )}

@@ -283,6 +283,10 @@ function ArchiveBand({ total }: { total?: number }) {
             <input id="home-search" name="q" type="search" required placeholder="Leita í safninu…" className="h-13 min-w-0 flex-1 rounded-full border border-stone bg-white/60 px-6 text-[16px] outline-none focus:border-charcoal" />
             <button type="submit" className="btn btn-dark">Leita</button>
           </form>
+          <Link to="/efnisord" className="btn btn-line mt-4">
+            Finna eftir efnisorðum <ArrowRight size={16} aria-hidden />
+          </Link>
+          <p className="mt-3 text-[14px] text-muted">Jól, eldhús, DIY, fyrir og eftir og hundruð annarra efnisorða.</p>
         </div>
         <nav aria-label="Greinar eftir árum" className="lg:col-span-6 lg:col-start-7">
           <ul className="grid grid-cols-3 gap-2 sm:grid-cols-4">

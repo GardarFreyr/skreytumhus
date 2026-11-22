@@ -13,6 +13,7 @@
  *            svæði ofan eða neðan við texta — og titillinn sést í fyrstu sýn.
  *  overlay   Texti ofan á ljósmynd er innan dökka hlutans af .scrim (≥ 74 % þekja) og
  *            textahólfið hylur ekki meira en 80 % myndarinnar.
+ *  orphan    Ekkert eitt stakt spjald/mynd í síðustu röð grindar eða myndasafns.
  *  grid      Myndir í sömu röð í .card-grid / .tile-grid hafa sama topp, hæð og breidd; jöfn dálkabil.
  *  blank     Ekkert autt lóðrétt bil (ekkert efni þvert yfir síðuna) stærra en bilakerfið leyfir.
  *  clip      Fyrirsagnir og texti klippast ekki lárétt (nema viljandi styttingar með „…“).
@@ -26,7 +27,7 @@ import { existsSync } from 'node:fs'
 
 const BASE = (process.env.BASE_URL || 'http://localhost:4173').replace(/\/$/, '')
 const WIDTHS = (process.env.WIDTHS || '390,768,1024,1440,1920').split(',').map(Number)
-const ROUTES = (process.env.ROUTES || '/,/greinar,/flokkur/heimili-og-innblastur,@latest-article,/greinar/kozy-fyrir-og-eftir,/herbergisbreytingar/kozy-fyrir-og-eftir,/innblastur,/herbergisbreytingar,/tv,/um-mig,/samband,/leit?q=jól,/thetta-er-ekki-til').split(',')
+const ROUTES = (process.env.ROUTES || '/,/greinar,/flokkur/heimili-og-innblastur,@latest-article,/greinar/kozy-fyrir-og-eftir,/herbergisbreytingar/kozy-fyrir-og-eftir,/innblastur,/herbergisbreytingar,/tv,/um-mig,/samband,/leit?q=jól,/efnisord,/efni/jol,/efni/kalkmalning,/greinar/dasamlega-heillandi-innlit,/thetta-er-ekki-til').split(',')
 const OUT = 'layout-report'
 const CHROME =
   process.env.CHROME_PATH ||
@@ -120,6 +121,22 @@ function audit() {
         if (heads.length > 1 && Math.max(...heads) - Math.min(...heads) > 0.5) add('grid', `röð við ${k}px: titlar byrja í ólíkri hæð`)
       }
     }
+  }
+
+  // orphan — ein stök mynd/spjald í síðustu röð grindar (stórt autt svæði við hliðina)
+  for (const g of document.querySelectorAll('main .card-grid, main .tile-grid, main .sh-gallery')) {
+    if (!vis(g)) continue
+    const items = [...g.children].filter((c) => vis(c) && c.getBoundingClientRect().height > 20)
+    if (items.length < 2) continue
+    const rows = []
+    for (const c of items) {
+      const t = Math.round(c.getBoundingClientRect().top)
+      const r = rows.find((x) => Math.abs(x.top - t) < 3)
+      if (r) r.n++
+      else rows.push({ top: t, n: 1 })
+    }
+    const cols = Math.max(...rows.map((r) => r.n))
+    if (cols >= 2 && rows.at(-1).n === 1) add('orphan', `${g.className.split(' ')[0]}: ${items.length} atriði í ${cols} dálkum – eitt stendur eitt í síðustu röð`)
   }
 
   // blank — lengsta auða lóðrétta bil

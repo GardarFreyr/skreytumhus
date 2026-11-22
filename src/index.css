@@ -140,21 +140,43 @@
 .article-flow > *:not(.sh-media) { max-width: 680px; margin-left: auto; margin-right: auto; }
 .article-flow > .sh-media { margin-top: 2.4em; margin-bottom: 2.4em; }
 
-/* Myndir í grein: brjótast út úr lesbreiddinni og raðast í gallerí */
-.sh-gallery { display: grid; gap: 12px; margin-left: auto; margin-right: auto; }
-.sh-gallery[data-count="1"] { max-width: 760px; }
-.sh-gallery[data-count="2"] { grid-template-columns: repeat(2, minmax(0, 1fr)); max-width: 1040px; }
-.sh-gallery[data-count="3"], .sh-gallery[data-many] { grid-template-columns: repeat(3, minmax(0, 1fr)); max-width: 1180px; }
-@media (max-width: 640px) {
-  .sh-gallery[data-count="3"], .sh-gallery[data-many] { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .sh-gallery { gap: 6px; }
+/*
+ * Myndasöfn í grein (sjá ArticleBody/galleryLayout): jafnaðar raðir.
+ * Hver mynd fær hlutfall sitt (--ar) og summu hlutfalla í sinni röð (--rs-*), svo allar myndir
+ * í röð verði jafnháar og fylli breiddina — án þess að klippa. Raðir eru reiknaðar fyrirfram
+ * (t.d. 4 → 2+2, 5 → 3+2, 7 → 3+2+2) svo engin mynd standi ein eftir í síðustu röð.
+ * Sími: ein mynd á breidd, eigin hlutföll. Spjaldtölva: helst tvær í röð. Tölva: 2–3 í röð.
+ */
+.sh-gallery {
+  --g: 6px;
+  --maxh: min(860px, 96svh);
+  display: flex; flex-wrap: wrap; justify-content: center; align-items: flex-start;
+  column-gap: var(--g); margin-left: auto; margin-right: auto; margin-bottom: calc(var(--g) * -1);
 }
-/* Myndir halda eigin hlutföllum og röð — ekkert klippt */
-.sh-gallery { align-items: start; }
-.sh-gallery figure { margin: 0; }
-.sh-gallery button { display: block; width: 100%; padding: 0; border: 0; background: transparent; cursor: zoom-in; overflow: hidden; }
-.sh-gallery img { display: block; width: 100%; height: auto; transition: transform 1s var(--ease-editorial), opacity .6s; }
+.sh-gallery[data-count="1"] { --maxh: min(880px, 88svh); max-width: 760px; }
+.sh-gallery[data-count="2"] { max-width: 1040px; }
+.sh-gallery:not([data-count="1"]):not([data-count="2"]) { max-width: 1180px; }
+.sh-gallery > figure { margin: 0 0 var(--g); width: 100%; }
+.sh-gallery > .sh-br { display: none; flex-basis: 100%; height: 0; }
+.sh-gallery button { display: block; width: 100%; aspect-ratio: var(--ar); padding: 0; border: 0; background: var(--color-stone); cursor: zoom-in; overflow: hidden; }
+.sh-gallery img { display: block; width: 100%; height: 100%; object-fit: cover; transition: transform 1s var(--ease-editorial), opacity .6s; }
 .sh-gallery button:hover img { transform: scale(1.02); }
+.sh-gallery figcaption { margin-top: .6rem; }
+@media (min-width: 640px) {
+  .sh-gallery { --g: 10px; }
+  .sh-gallery > figure { --rs: var(--rs-md); --k: var(--k-md); }
+  .sh-gallery > .sh-br[data-bp="md"] { display: block; }
+}
+@media (min-width: 1024px) {
+  .sh-gallery { --g: 12px; }
+  .sh-gallery > figure { --rs: var(--rs-lg); --k: var(--k-lg); }
+  .sh-gallery > .sh-br[data-bp="md"] { display: none; }
+  .sh-gallery > .sh-br[data-bp="lg"] { display: block; }
+}
+@media (min-width: 640px) {
+  /* Breidd = (raðbreidd − bil) × eigið hlutfall / summa hlutfalla. Raðbreidd takmarkast af hámarkshæð. */
+  .sh-gallery > figure { width: calc((min(100%, var(--rs) * var(--maxh) + (var(--k) - 1) * var(--g)) - (var(--k) - 1) * var(--g)) * var(--ar) / var(--rs) - 0.5px); }
+}
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }

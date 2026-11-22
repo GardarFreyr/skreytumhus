@@ -13,6 +13,7 @@ const TvPage = lazy(() => import('./pages/TvPage'))
 const AboutPage = lazy(() => import('./pages/AboutPage'))
 const ContactPage = lazy(() => import('./pages/ContactPage'))
 const SearchPage = lazy(() => import('./pages/SearchPage'))
+const TopicsPage = lazy(() => import('./pages/TopicsPage'))
 import NotFoundPage from './pages/NotFoundPage'
 
 export const router = createBrowserRouter([
@@ -23,6 +24,8 @@ export const router = createBrowserRouter([
       { path: 'greinar', element: <ArticlesPage /> },
       { path: 'greinar/:slug', element: <ArticlePage /> },
       { path: 'flokkur/id/:id', element: <ArticlesPage /> },
+      { path: 'efni/:term', element: <ArticlesPage /> },
+      { path: 'efnisord', element: <TopicsPage /> },
       { path: 'flokkur/:slug', element: <ArticlesPage /> },
       { path: 'innblastur', element: <InspirationPage /> },
       { path: 'herbergisbreytingar', element: <ProjectsPage /> },

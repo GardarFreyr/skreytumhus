@@ -119,3 +119,19 @@ The three advertisers in the live site's AdRotate sidebar appear here with their
 ## Layout regression check
 
 `npm run check:layout` runs `scripts/layout-check.mjs` (puppeteer-core + local Chrome) against `vite preview` on port 4173 (override with `BASE_URL`, `WIDTHS`, `ROUTES`). At 390, 768, 1024, 1440 and 1920px it fails on: empty hero space or a title below the first viewport, caption text outside the photo scrim, uneven card rows, large blank gaps, clipped text, horizontal overflow, broken or non-`cover` images, and CLS ≥ 0.1. Screenshots and `report.json` go to `layout-report/` (git-ignored).
+
+## Topic directory (Efnisorð)
+
+`/efnisord` lists every non-empty WordPress category and tag, fetched at runtime from the REST API (`src/lib/terms.ts`). A category and a tag with the same name, such as "Jól", become one topic. Its page `/efni/<key>` requests posts in *either* term (`tax_relation=OR`), so the article counts and relationships are WordPress's own. In counts, "399+" marks a merged topic: the number is the larger of its terms, and the topic page shows the exact total. Search is partial and case-insensitive. If you type without accents, it matches accented names too ("jol" finds "Jól"). If you type with accents, it matches them exactly. Groups and popular topics in `src/data/termGroups.ts` only *arrange* existing terms. A key that doesn't exist in WordPress is simply not shown.
+
+The compact finder sits at the top of `/greinar`. It is linked from the homepage archive band, the footer and site search, which also shows matching topics.
+
+## Article galleries
+
+Consecutive image blocks in a post form one gallery (`ArticleBody.tsx`). Rows are fixed per breakpoint by `galleryLayout.ts`:
+
+- **Desktop:** 2–3 images per row. 4 → 2+2, 5 → 3+2, 7 → 3+2+2, 10 → 3+3+2+2.
+- **Tablet:** rows of 2; an odd total ends on a row of 3.
+- **Mobile:** one image per row.
+
+Each image's width is proportional to its own aspect ratio, so the images in a row share one height and are not cropped. `npm run check:gallery` verifies this on real posts (3, 4, 5, 7, 10 and 11-image galleries) and also tests the topic search with Icelandic words.

@@ -8,6 +8,9 @@ import { ArticleCard } from '../components/editorial/ArticleCard'
 import { Pagination } from '../components/ui/Pagination'
 import { CardSkeletons, EmptyState, ErrorState } from '../components/ui/States'
 import { topics } from '../data/taxonomy'
+import { TermChip } from '../components/discovery/TopicFinder'
+import { useTermIndex } from '../features/articles/useTermIndex'
+import { searchTerms } from '../lib/terms'
 
 const SUGGESTIONS = ['Eldhús', 'Barnaherbergi', 'Jól', 'DIY', 'Borðskreytingar', 'Fyrir og eftir', 'Haust', 'Blóm']
 
@@ -29,6 +32,8 @@ export default function SearchPage() {
 
   useSeo({ title: q ? `Leit: ${q}` : 'Leit' })
   const results = useArticles(q ? { search: q, page, perPage: 12 } : null)
+  const termIdx = useTermIndex()
+  const termHits = q && termIdx.status === 'success' ? searchTerms(termIdx.data.terms, q, 12) : []
 
   return (
     <div className="wrap pt-10 sec-b lg:pt-16">
@@ -74,6 +79,21 @@ export default function SearchPage() {
             </ul>
           </div>
         </div>
+      )}
+
+      {q && (
+        // Föst hæð: efnisorðin hlaðast eftir á og mega ekki ýta niðurstöðunum niður
+        <nav aria-label="Efnisorð sem passa" className="mt-8 h-[5.25rem]">
+          <p className="eyebrow mb-3">Efnisorð sem passa</p>
+          {termHits.length > 0 ? (
+            <ul className="-mx-5 flex gap-2 overflow-x-auto px-5 pb-2 sm:mx-0 sm:px-0">
+              {termHits.map((t) => <li key={t.key} className="shrink-0"><TermChip term={t} /></li>)}
+              <li className="shrink-0"><Link to="/efnisord" className="chip">Öll efnisorð…</Link></li>
+            </ul>
+          ) : termIdx.status !== 'loading' ? (
+            <p className="text-[14px] text-muted">Ekkert efnisorð passar. <Link to="/efnisord" className="underline underline-offset-4">Skoða öll efnisorð</Link></p>
+          ) : null}
+        </nav>
       )}
 
       {q && (

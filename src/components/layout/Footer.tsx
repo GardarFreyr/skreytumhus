@@ -25,6 +25,7 @@ export function Footer() {
               {mainNav.map((n) => (
                 <li key={n.to}><Link className="link-u hover:text-ivory" to={n.to}>{n.label}</Link></li>
               ))}
+              <li><Link className="link-u hover:text-ivory" to="/efnisord">Efnisorð</Link></li>
               <li><Link className="link-u hover:text-ivory" to="/samband">Samband</Link></li>
             </ul>
           </nav>

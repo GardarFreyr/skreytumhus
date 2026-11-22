@@ -55,6 +55,8 @@ export interface ArticleQuery {
   perPage?: number
   categories?: number[]
   tags?: number[]
+  /** 'OR': færslur í einhverjum flokkanna EÐA með einhverju merkjanna */
+  taxRelation?: 'OR'
   search?: string
   include?: number[]
   exclude?: number[]
