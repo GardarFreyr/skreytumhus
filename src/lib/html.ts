@@ -1,6 +1,14 @@
 import DOMPurify from 'dompurify'
+import { site } from '../data/site'
 
 const ORIGIN_RE = /^https?:\/\/(www\.)?skreytumhus\.is/i
+
+/**
+ * Eldra netfang Soffíu (líka ritað „soffiadogg(hja)yahoo.com“) stendur enn í WordPress-efni.
+ * Það er leiðrétt við birtingu hér – WordPress sjálfu er ekki breytt.
+ */
+const OLD_EMAIL_RE = /soffiadogg(?:@|\s*\(hj[aá]\)\s*)yahoo\.com/gi
+export const fixEmail = (s: string) => s.replace(OLD_EMAIL_RE, site.email)
 
 /** Afkóðar HTML-einingar (&#8230; o.s.frv.) í venjulegan texta. */
 export function decode(input: string): string {
@@ -24,7 +32,7 @@ export function truncate(text: string, max = 180): string {
 
 /** Hreinsar excerpt frá WordPress („Read more →“ o.fl.). */
 export function cleanExcerpt(htmlStr: string): string {
-  return plainText(htmlStr).replace(/\s*(Read more|Lesa meira)\s*→?\s*$/i, '').replace(/\[…\]|\[&hellip;\]/g, '…').replace(/\s*\[\d+(?:,\s*\d+)*\]/g, '').trim()
+  return fixEmail(plainText(htmlStr)).replace(/\s*(Read more|Lesa meira)\s*→?\s*$/i, '').replace(/\[…\]|\[&hellip;\]/g, '…').replace(/\s*\[\d+(?:,\s*\d+)*\]/g, '').trim()
 }
 
 /**
@@ -56,7 +64,7 @@ export function rewriteHref(href: string): { href: string; internal: boolean } {
 
 /** Hreinsar HTML greinar og lagar tengla og myndir. Keyrir aðeins í vafra. */
 export function sanitizeArticleHtml(raw: string): string {
-  const clean = DOMPurify.sanitize(raw, {
+  const clean = DOMPurify.sanitize(fixEmail(raw), {
     ADD_TAGS: ['iframe'],
     ADD_ATTR: ['allow', 'allowfullscreen', 'frameborder', 'target', 'loading', 'srcset', 'sizes'],
     FORBID_TAGS: ['style', 'script', 'form', 'input'],
