@@ -2,25 +2,13 @@ import { useState } from 'react'
 import { Link, useSearchParams } from 'react-router'
 import { useArticles } from '../features/articles/hooks'
 import { useSeo } from '../lib/seo'
-import { Img } from '../components/ui/Img'
+import { Img, RATIO } from '../components/ui/Img'
 import { Meta } from '../components/editorial/ArticleCard'
 import { CardSkeletons, EmptyState, ErrorState } from '../components/ui/States'
 import { INSPIRATION_DEFAULT_IDS, inspirationFilters } from '../data/taxonomy'
 
-const PER_CHUNK = 9
-
-/** Uppröðun hverrar 9-mynda lotu á 6 dálka grind: blanda af háum, breiðum og ferköntuðum myndum. */
-const PATTERN = [
-  { cls: 'col-span-6 md:col-span-4 md:row-span-2', ratio: '4 / 5' },
-  { cls: 'col-span-3 md:col-span-2', ratio: '4 / 5' },
-  { cls: 'col-span-3 md:col-span-2', ratio: '4 / 5' },
-  { cls: 'col-span-3 md:col-span-2', ratio: '1 / 1' },
-  { cls: 'col-span-3 md:col-span-2', ratio: '1 / 1' },
-  { cls: 'col-span-6 md:col-span-2', ratio: '4 / 5' },
-  { cls: 'col-span-6 md:col-span-3', ratio: '5 / 4' },
-  { cls: 'col-span-3 md:col-span-3', ratio: '5 / 4' },
-  { cls: 'col-span-3 md:hidden', ratio: '1 / 1' },
-]
+/** 12 fyllir heilar raðir í 2, 3 og 4 dálkum — engin stök flís í lok lotu. */
+const PER_CHUNK = 12
 
 export default function InspirationPage() {
   const [params, setParams] = useSearchParams()
@@ -74,28 +62,26 @@ export default function InspirationPage() {
 function Chunk({ cats, page, isLast, onMore }: { cats: number[]; page: number; isLast: boolean; onMore: () => void }) {
   const state = useArticles({ categories: cats, page, perPage: PER_CHUNK })
   if (state.status === 'error') return <ErrorState error={state.error} />
-  if (state.status === 'loading') return <CardSkeletons className="grid grid-cols-2 gap-4 md:grid-cols-3" count={6} ratio="1 / 1" />
+  if (state.status === 'loading') return <CardSkeletons className="tile-grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4" count={8} ratio={RATIO.TILE} />
   const { items, totalPages } = state.data
   if (!items.length && page === 1) return <EmptyState title="Ekkert hér enn" />
 
   return (
     <>
-      <ul className="grid grid-flow-dense grid-cols-6 gap-3 sm:gap-4">
-        {items.map((a, i) => {
-          const p = PATTERN[i % PATTERN.length]
-          return (
-            <li key={a.id} className={p.cls}>
-              <Link to={`/greinar/${a.slug}`} className="group relative block h-full overflow-hidden text-ivory">
-                <Img pic={a.image} ratio={p.ratio} className="h-full" sizes="(min-width: 768px) 40vw, 100vw" priority={page === 1 && i === 0} />
-                <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-night/70 via-transparent to-transparent opacity-90 transition-opacity duration-500 md:opacity-0 md:group-hover:opacity-100 md:group-focus-visible:opacity-100" />
-                <div className="absolute inset-x-0 bottom-0 p-4 transition-all duration-500 sm:p-6 md:translate-y-3 md:opacity-0 md:group-hover:translate-y-0 md:group-hover:opacity-100 md:group-focus-visible:translate-y-0 md:group-focus-visible:opacity-100">
-                  <Meta article={a} light />
-                  <h2 className="display mt-2 text-[clamp(1.3rem,2vw,2rem)]">{a.title}</h2>
-                </div>
-              </Link>
-            </li>
-          )
-        })}
+      {/* Jöfn grind: allar flísar sama hlutfall (4:5), sama bil — myndir í sömu röð jafnháar */}
+      <ul className="tile-grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+        {items.map((a, i) => (
+          <li key={a.id}>
+            <Link to={`/greinar/${a.slug}`} className="group relative block overflow-hidden text-ivory">
+              <Img pic={a.image} ratio={RATIO.TILE} sizes="(min-width: 1024px) 25vw, (min-width: 768px) 33vw, 50vw" priority={page === 1 && i < 2} />
+              <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-night/70 via-transparent to-transparent opacity-90 transition-opacity duration-500 md:opacity-0 md:group-hover:opacity-100 md:group-focus-visible:opacity-100" />
+              <div className="absolute inset-x-0 bottom-0 p-4 transition-all duration-500 sm:p-5 md:translate-y-3 md:opacity-0 md:group-hover:translate-y-0 md:group-hover:opacity-100 md:group-focus-visible:translate-y-0 md:group-focus-visible:opacity-100">
+                <Meta article={a} light compact />
+                <h2 className="display mt-2 line-clamp-3 text-[clamp(1.2rem,1.7vw,1.7rem)]">{a.title}</h2>
+              </div>
+            </Link>
+          </li>
+        ))}
       </ul>
       {isLast && page < totalPages && (
         <div className="mt-12 flex justify-center">

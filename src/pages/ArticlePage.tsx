@@ -130,7 +130,7 @@ function ArticleView({ a, variant }: { a: Article; variant: 'article' | 'project
         <section aria-labelledby="tengt" className="mt-32 bg-cream py-24">
           <div className="wrap">
             <h2 id="tengt" className="display text-[clamp(2.2rem,4vw,3.6rem)]">Þér gæti <em>líka líkað</em></h2>
-            <div className="mt-12 grid gap-12 md:grid-cols-3 md:gap-8 lg:gap-12">
+            <div className="card-grid mt-12 sm:grid-cols-3">
               {related.data.items.map((r) => <ArticleCard key={r.id} article={r} />)}
             </div>
           </div>

@@ -87,7 +87,7 @@ export default function SearchPage() {
           </p>
           <div className="mt-10">
             {results.status === 'error' && <ErrorState error={results.error} />}
-            {results.status === 'loading' && <CardSkeletons className="grid gap-10 sm:grid-cols-2 lg:grid-cols-3" count={6} />}
+            {results.status === 'loading' && <CardSkeletons className="card-grid sm:grid-cols-2 lg:grid-cols-3" count={6} />}
             {results.status === 'success' && results.data.items.length === 0 && (
               <EmptyState title={`Ekkert fannst fyrir „${q}“`}>
                 <p>Prófaðu annað orð eða styttri leit — t.d. „eldhús“ frekar en „eldhúsbreytingar“.</p>
@@ -98,7 +98,7 @@ export default function SearchPage() {
             )}
             {results.status === 'success' && results.data.items.length > 0 && (
               <>
-                <ul className="grid gap-x-8 gap-y-14 sm:grid-cols-2 lg:grid-cols-3 lg:gap-x-12">
+                <ul className="card-grid sm:grid-cols-2 lg:grid-cols-3">
                   {results.data.items.map((a) => <li key={a.id}><ArticleCard article={a} /></li>)}
                 </ul>
                 <Pagination page={page} totalPages={results.data.totalPages} />

@@ -9,7 +9,7 @@ import { truncate } from '../lib/html'
 import { ArticleCard, Meta } from '../components/editorial/ArticleCard'
 import { MagazineGrid } from '../components/editorial/MagazineGrid'
 import { BeforeAfter } from '../components/editorial/BeforeAfter'
-import { Img } from '../components/ui/Img'
+import { Img, RATIO } from '../components/ui/Img'
 import { AdCluster, AdRail } from '../components/ads/Ads'
 import { CardSkeletons, ErrorState, SectionHeader } from '../components/ui/States'
 import { topics } from '../data/taxonomy'
@@ -55,7 +55,7 @@ export default function HomePage() {
             ) : latest.status === 'error' ? (
               <ErrorState error={latest.error} />
             ) : (
-              <CardSkeletons className="grid gap-10 md:grid-cols-3" count={3} />
+              <CardSkeletons className="card-grid sm:grid-cols-3" count={3} />
             )}
           </div>
           {/* Auglýsingar: hliðarstika á stórum skjám, hólf milli efnishluta annars */}
@@ -126,19 +126,19 @@ function Topics({ byId }: { byId: Map<number, ArticleSummary> }) {
             Sextán ár af skreytingum, breytingum og fegrun heimilisins, flokkað svo auðvelt sé að finna innblástur.
           </p>
         </SectionHeader>
-        <ul className="mt-14 grid grid-cols-2 gap-3 sm:gap-5 lg:mt-20 lg:grid-cols-6 lg:grid-rows-2">
+        {/* Jafnstórar flísar; síðasta röð er miðjusett svo 5 flokkar haldist í jafnvægi á öllum breiddum */}
+        <ul className="mt-14 flex flex-wrap justify-center gap-3 sm:gap-4 lg:mt-20">
           {topics.map((t, i) => {
             const cover = byId.get(t.coverPostId)
-            const big = i === 0
             return (
-              <li key={t.slug} className={big ? 'col-span-2 lg:col-span-2 lg:row-span-2' : i < 3 ? 'lg:col-span-2' : 'lg:col-span-2'}>
-                <Link to={`/flokkur/${t.slug}`} className="group relative block h-full text-ivory">
-                  <Img pic={cover?.image} ratio={big ? '4 / 5' : '4 / 3.4'} sizes={big ? '(min-width:1024px) 33vw, 100vw' : '(min-width:1024px) 33vw, 50vw'} className="h-full" />
+              <li key={t.slug} className="w-[calc((100%-0.75rem)/2)] sm:w-[calc((100%-2rem)/3)] lg:w-[calc((100%-4rem)/5)]">
+                <Link to={`/flokkur/${t.slug}`} className="group relative block text-ivory">
+                  <Img pic={cover?.image} ratio={RATIO.TILE} sizes="(min-width:1024px) 20vw, (min-width:640px) 33vw, 50vw" />
                   <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-night/70 via-night/10 to-transparent" />
                   <div className="absolute inset-x-0 bottom-0 p-4 sm:p-6 lg:p-8">
                     <span className="text-[11px] uppercase tracking-[0.24em] text-ivory/85">0{i + 1}</span>
-                    <h3 className={`display mt-1 ${big ? 'text-[clamp(2.2rem,3.6vw,3.4rem)]' : 'text-[clamp(1.45rem,2.3vw,2.2rem)]'}`}>{t.name}</h3>
-                    <p className={`mt-2 max-w-xs text-[14px] leading-snug text-ivory/85 ${big ? '' : 'hidden sm:block'}`}>{t.description}</p>
+                    <h3 className="display mt-1 flex min-h-[2lh] items-end text-[clamp(1.45rem,2vw,2rem)]">{t.name}</h3>
+                    <p className="mt-2 line-clamp-2 hidden min-h-[2lh] max-w-xs text-[13.5px] leading-snug text-ivory/85 sm:block">{t.description}</p>
                   </div>
                 </Link>
               </li>
@@ -249,8 +249,8 @@ function TvTeaser({ byId, loading }: { byId: Map<number, ArticleSummary>; loadin
               <ul>
                 {others.map((e) => (
                   <li key={e.postId} className="border-t border-ivory/15">
-                    <Link to={`/greinar/${e.post!.slug}`} className="group grid grid-cols-[88px_1fr] items-center gap-5 py-4">
-                      <Img pic={e.post!.image} ratio="4 / 5" sizes="88px" />
+                    <Link to={`/greinar/${e.post!.slug}`} className="group grid grid-cols-[112px_1fr] items-center gap-5 py-4">
+                      <Img pic={e.post!.image} ratio={RATIO.CARD} sizes="112px" />
                       <span>
                         <span className="text-[11px] uppercase tracking-[0.2em] text-ivory/60">Þáttur {e.episode}</span>
                         <span className="mt-1 block font-display text-[1.45rem] leading-tight"><span className="link-u">{e.post!.title}</span></span>

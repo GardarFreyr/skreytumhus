@@ -6,7 +6,7 @@ import { formatDate } from '../lib/format'
 import { truncate } from '../lib/html'
 import { BeforeAfter } from '../components/editorial/BeforeAfter'
 import { ArticleCard } from '../components/editorial/ArticleCard'
-import { Img } from '../components/ui/Img'
+import { Img, RATIO } from '../components/ui/Img'
 import { CardSkeletons, ErrorState } from '../components/ui/States'
 import { archiveProjectIds, featuredTransformation } from '../data/projects'
 import { BEFORE_AFTER_CATEGORY_ID } from '../data/taxonomy'
@@ -63,7 +63,7 @@ export default function ProjectsPage() {
         <h2 id="nyleg" className="display text-[clamp(2.4rem,5vw,4.6rem)]">Nýlegar <em>breytingar</em></h2>
         <div className="mt-14">
           {recent.status === 'error' && <ErrorState error={recent.error} />}
-          {recent.status === 'loading' && <CardSkeletons className="grid gap-10 md:grid-cols-3" count={3} />}
+          {recent.status === 'loading' && <CardSkeletons className="card-grid sm:grid-cols-3" count={3} />}
           {lead && (
             <div className="flex flex-col gap-20">
               <Link to={projectPath(lead.slug)} className="group relative block text-ivory">
@@ -75,7 +75,7 @@ export default function ProjectsPage() {
                   <p className="mt-4 hidden max-w-xl text-[16px] text-ivory/85 md:block">{truncate(lead.excerpt, 200)}</p>
                 </div>
               </Link>
-              <div className="grid grid-cols-2 gap-x-4 gap-y-14 sm:gap-x-8 lg:grid-cols-3 lg:gap-x-12">
+              <div className="card-grid sm:grid-cols-2 lg:grid-cols-3">
                 {rest.map((a) => <ArticleCard key={a.id} article={a} to={projectPath(a.slug)} />)}
               </div>
               <Link to="/flokkur/fyrireftir" className="btn btn-line self-center">Allar fyrir/eftir-færslur <ArrowRight size={16} aria-hidden /></Link>
@@ -92,13 +92,13 @@ export default function ProjectsPage() {
         </div>
         <div className="mt-14">
           {archive.status === 'error' && <ErrorState error={archive.error} />}
-          {archive.status === 'loading' && <CardSkeletons className="grid grid-cols-2 gap-6 lg:grid-cols-4" count={8} ratio="1 / 1" />}
+          {archive.status === 'loading' && <CardSkeletons className="card-grid grid-cols-2 lg:grid-cols-4" count={8} />}
           {archive.data && (
-            <ul className="grid grid-cols-2 gap-x-4 gap-y-10 sm:gap-x-6 lg:grid-cols-4">
+            <ul className="card-grid grid-cols-2 lg:grid-cols-4">
               {archive.data.items.map((a) => (
                 <li key={a.id}>
                   <Link to={projectPath(a.slug)} className="group block">
-                    <Img pic={a.image} ratio="1 / 1" sizes="(min-width:1024px) 25vw, 50vw" />
+                    <Img pic={a.image} ratio={RATIO.CARD} sizes="(min-width:1024px) 25vw, 50vw" />
                     <p className="mt-3 text-[11px] uppercase tracking-[0.2em] text-muted"><time dateTime={a.date}>{new Date(a.date).getFullYear()}</time></p>
                     <h3 className="mt-1 font-display text-[1.4rem] leading-tight"><span className="link-u">{a.title}</span></h3>
                   </Link>

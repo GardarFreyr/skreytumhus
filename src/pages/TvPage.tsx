@@ -4,7 +4,7 @@ import { useArticles } from '../features/articles/hooks'
 import { useSeo } from '../lib/seo'
 import { formatDate } from '../lib/format'
 import { truncate } from '../lib/html'
-import { Img } from '../components/ui/Img'
+import { Img, RATIO } from '../components/ui/Img'
 import { CardSkeletons, ErrorState } from '../components/ui/States'
 import { diyClips, seasons, TV_SERIES_URL, type Episode } from '../data/tv'
 import type { ArticleSummary } from '../lib/types'
@@ -63,7 +63,7 @@ export default function TvPage() {
               <h2 id={`s${s.number}`} className="display text-[clamp(2.2rem,4vw,3.6rem)]">Þáttaröð {s.number}</h2>
               <p className="text-[13px] uppercase tracking-[0.2em] text-ivory/60">{s.year} · {s.episodes.length} þættir</p>
             </div>
-            <ol className="mt-10 grid grid-cols-1 gap-x-6 gap-y-12 sm:grid-cols-2 lg:grid-cols-3">
+            <ol className="card-grid mt-10 sm:grid-cols-2 lg:grid-cols-3">
               {[...s.episodes].sort((a, b) => a.episode - b.episode).map((e) => (
                 <EpisodeCard key={e.postId} e={e} post={byId.get(e.postId)} />
               ))}
@@ -74,13 +74,13 @@ export default function TvPage() {
       {posts.data && (
         <section aria-labelledby="diy" className="wrap mt-24 border-t border-ivory/15 pt-12 lg:mt-32">
           <h2 id="diy" className="display text-[clamp(2.2rem,4vw,3.6rem)]">Stuttir <em className="text-sage">DIY-þættir</em></h2>
-          <ul className="mt-10 grid grid-cols-2 gap-x-4 gap-y-10 lg:grid-cols-4 lg:gap-x-6">
+          <ul className="card-grid mt-10 grid-cols-2 lg:grid-cols-4">
             {diyClips.map((e) => <EpisodeCard key={e.postId} e={e} post={byId.get(e.postId)} compact />)}
           </ul>
         </section>
       )}
 
-      {posts.status === 'loading' && <div className="wrap mt-20"><CardSkeletons className="grid gap-8 md:grid-cols-3" count={3} ratio="16 / 10" /></div>}
+      {posts.status === 'loading' && <div className="wrap mt-20"><CardSkeletons className="card-grid sm:grid-cols-3" count={3} /></div>}
 
       <aside className="wrap mt-28">
         <div className="border border-ivory/20 p-8 sm:p-12">
@@ -102,7 +102,7 @@ function EpisodeCard({ e, post, compact = false }: { e: Episode; post?: ArticleS
   return (
     <li className="flex flex-col">
       <Link to={`/greinar/${post.slug}`} className="group block">
-        <Img pic={post.image} ratio={compact ? '4 / 5' : '16 / 10'} sizes="(min-width:1024px) 30vw, 50vw" />
+        <Img pic={post.image} ratio={RATIO.CARD} sizes="(min-width:1024px) 30vw, 50vw" />
         {!compact && <p className="mt-5 text-[11px] uppercase tracking-[0.22em] text-ivory/60">Þáttur {e.episode} · <time dateTime={post.date}>{formatDate(post.date)}</time></p>}
         <h3 className={`mt-2 font-display leading-tight ${compact ? 'mt-4 text-[1.35rem]' : 'text-[1.7rem]'}`}><span className="link-u">{post.title}</span></h3>
       </Link>

@@ -28,7 +28,7 @@ export function EmptyState({ title, children }: { title: string; children?: Reac
 }
 
 /** Beinagrind sem heldur sama hlutfalli og spjöldin svo útlitið hoppi ekki. */
-export function CardSkeletons({ count = 6, ratio = '4 / 5', className = '' }: { count?: number; ratio?: string; className?: string }) {
+export function CardSkeletons({ count = 6, ratio = '4 / 3', className = '' }: { count?: number; ratio?: string; className?: string }) {
   return (
     <div className={className} aria-busy="true" aria-label="Hleð greinum">
       {Array.from({ length: count }, (_, i) => (

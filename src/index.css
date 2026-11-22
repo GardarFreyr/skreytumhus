@@ -56,6 +56,12 @@
   .frame > img { @apply absolute inset-0 h-full w-full object-cover; transform: scale(1.07); transition: transform 1.4s var(--ease-editorial); }
   .group:hover .frame > img, .frame.zoom:hover > img { transform: scale(1.11); }
 
+  /* Ein sameiginleg spjaldagrind: sömu bil milli dálka og raða alls staðar, engin hliðrun */
+  .card-grid { display: grid; column-gap: 1.5rem; row-gap: 3.5rem; align-items: start; }
+  @media (min-width: 1024px) { .card-grid { column-gap: 2.5rem; row-gap: 4rem; } }
+  .tile-grid { display: grid; gap: 0.75rem; align-items: start; }
+  @media (min-width: 640px) { .tile-grid { gap: 1rem; } }
+
   .link-u {
     background: linear-gradient(currentColor, currentColor) 0 100% / 0% 1px no-repeat;
     transition: background-size 0.5s var(--ease-editorial);

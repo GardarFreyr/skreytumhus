@@ -112,7 +112,7 @@ export default function ArticlesPage() {
         {list.status === 'error' ? (
           <ErrorState error={list.error} />
         ) : list.status !== 'success' ? (
-          <CardSkeletons className="grid gap-10 md:grid-cols-3" count={6} />
+          <CardSkeletons className="card-grid sm:grid-cols-3" count={6} />
         ) : list.data.items.length === 0 ? (
           <EmptyState title="Engar greinar hér">
             <p>Prófaðu annan flokk eða annað ár, eða <Link className="underline" to="/leit">leitaðu í safninu</Link>.</p>
