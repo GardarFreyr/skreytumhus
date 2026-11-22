@@ -10,6 +10,7 @@ import { ArticleCard, Meta } from '../components/editorial/ArticleCard'
 import { MagazineGrid } from '../components/editorial/MagazineGrid'
 import { BeforeAfter } from '../components/editorial/BeforeAfter'
 import { Img } from '../components/ui/Img'
+import { AdCluster, AdRail } from '../components/ads/Ads'
 import { CardSkeletons, ErrorState, SectionHeader } from '../components/ui/States'
 import { topics } from '../data/taxonomy'
 import { seasons } from '../data/tv'
@@ -47,15 +48,20 @@ export default function HomePage() {
         <SectionHeader eyebrow="Nýjast á blogginu" title={<>Nýjustu <em>færslurnar</em></>} id="nyjast">
           <Link to="/greinar" className="btn btn-line">Allar greinar <ArrowRight size={16} aria-hidden /></Link>
         </SectionHeader>
-        <div className="mt-14 lg:mt-20">
-          {latest.status === 'success' ? (
-            <MagazineGrid items={latest.data.items.slice(1, 7)} />
-          ) : latest.status === 'error' ? (
-            <ErrorState error={latest.error} />
-          ) : (
-            <CardSkeletons className="grid gap-10 md:grid-cols-3" count={3} />
-          )}
+        <div className="mt-14 lg:mt-20 xl:grid xl:grid-cols-[minmax(0,1fr)_202px] xl:gap-16">
+          <div className="min-w-0">
+            {latest.status === 'success' ? (
+              <MagazineGrid items={latest.data.items.slice(1, 7)} />
+            ) : latest.status === 'error' ? (
+              <ErrorState error={latest.error} />
+            ) : (
+              <CardSkeletons className="grid gap-10 md:grid-cols-3" count={3} />
+            )}
+          </div>
+          {/* Auglýsingar: hliðarstika á stórum skjám, hólf milli efnishluta annars */}
+          <AdRail className="hidden xl:block" />
         </div>
+        <AdCluster className="mt-24 xl:hidden" />
       </section>
 
       <Topics byId={byId} />

@@ -97,3 +97,21 @@ Mobile performance misses the ≥90 target. LCP is about 5.2 s on simulated slow
 - **Article content is the original WordPress HTML**, sanitized. Old posts may contain dated formatting, external embeds that are stripped (only YouTube/Vimeo/Vísir iframes are allowed), or dead links.
 - **Search is WordPress's built-in search.** Relevance is basic.
 - **The archive is not imported.** It is read live, so the demo itself contains no copy of the 3 169 posts.
+
+## Advertisements
+
+The three advertisers in the live site's AdRotate sidebar appear here with their **original banner files**. The files are copied unchanged into `public/ads/`, and the details are in `src/data/ads.ts`. The links go exactly where the live banners point:
+
+| Advertiser | Banner | Link |
+|---|---|---|
+| Slippfélagið | 200×720, rotates versions A/B/C like the live site | https://slippfelagid.is/litir-og-litakort/skreytum-hus/ |
+| Húsgagnahöllin | 200×300 “jólabretti” | https://husgagnahollin.is/ |
+| Dorma | 200×300 “Kosy bamboo” | https://dorma.is/ |
+
+**Where they appear:**
+- **Homepage and article pages, 1280px and wider:** a right-hand sidebar. Húsgagnahöllin and Dorma are at the top, and the Slippfélagið banner stays in view while scrolling.
+- **Smaller screens:** an ad block between sections. On the homepage it comes after “Nýjustu færslurnar”; on article pages it comes after the article and before related posts.
+
+**Labelling:** every banner is marked “Auglýsing” with the advertiser's name, sits in its own frame, and links with `rel="sponsored"` in a new tab.
+
+**Not included:** the live sidebar also has a Skreytum Hús TV / Vísir promo. It isn't a third-party advert, and the TV page already covers the show. The banners are only 200px wide at source, so they are never shown larger than that. Clicks are not counted (the live site uses AdRotate tracking).

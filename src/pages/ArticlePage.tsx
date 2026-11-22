@@ -7,6 +7,7 @@ import { formatDate, readingMinutes } from '../lib/format'
 import { plainText, truncate } from '../lib/html'
 import { ArticleBody } from '../components/editorial/ArticleBody'
 import { ArticleCard } from '../components/editorial/ArticleCard'
+import { AdCluster, AdRail } from '../components/ads/Ads'
 import { ShareBar } from '../components/editorial/ShareBar'
 import { Img } from '../components/ui/Img'
 import { ErrorState } from '../components/ui/States'
@@ -95,7 +96,8 @@ function ArticleView({ a, variant }: { a: Article; variant: 'article' | 'project
         )}
       </header>
 
-      <div className="wrap mt-16 lg:mt-24">
+      <div className="wrap mt-16 lg:mt-24 xl:grid xl:grid-cols-[minmax(0,1fr)_202px] xl:gap-16">
+        <div className="min-w-0">
         <ArticleBody html={a.html} />
 
         <footer className="mx-auto mt-20 flex max-w-[680px] flex-col gap-8 border-t border-line pt-10">
@@ -114,6 +116,14 @@ function ArticleView({ a, variant }: { a: Article; variant: 'article' | 'project
             </a>
           </p>
         </footer>
+        </div>
+        {/* Auglýsingar: hliðarstika á stórum skjám */}
+        <AdRail className="hidden xl:block" />
+      </div>
+
+      {/* Auglýsingar á minni skjám: á eftir greininni, áður en tengdar færslur koma */}
+      <div className="wrap xl:hidden">
+        <AdCluster className="mx-auto mt-20 max-w-[680px]" />
       </div>
 
       {related.data && related.data.items.length > 0 && (
