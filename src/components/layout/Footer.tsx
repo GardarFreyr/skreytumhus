@@ -3,6 +3,7 @@ import { ArrowUpRight, Mail } from 'lucide-react'
 import { mainNav, site } from '../../data/site'
 import { topics } from '../../data/taxonomy'
 import { Wordmark } from './Wordmark'
+import { BackToTopButton } from './BackToTopButton'
 
 export function Footer() {
   return (
@@ -10,7 +11,7 @@ export function Footer() {
       <div className="wrap sec-t pb-10">
         <div className="grid gap-14 lg:grid-cols-12">
           <div className="lg:col-span-5">
-            <Link to="/" title="Forsíða" className="inline-block"><Wordmark light className="h-[64px] lg:h-[84px]" /></Link>
+            <Link to="/" title="Forsíða" className="inline-block"><Wordmark white className="h-[60px] lg:h-[79px]" /></Link>
             <p className="mt-6 max-w-sm text-[15px] leading-relaxed text-ivory/70">
               Íslenskt heimilisblogg um skreytingar og breytingar, fegrun heimilisins og almennt þá hluti sem gleðja. Skrifað af Soffíu Dögg síðan í september 2010.
             </p>
@@ -51,7 +52,11 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="mt-20 flex flex-col gap-4 border-t border-ivory/15 pt-8 text-[12.5px] text-ivory/60 md:flex-row md:items-center md:justify-between">
+        <div className="mt-16 flex justify-center lg:mt-20">
+          <BackToTopButton />
+        </div>
+
+        <div className="mt-12 flex flex-col gap-4 border-t border-ivory/15 pt-8 text-[12.5px] text-ivory/60 md:flex-row md:items-center md:justify-between">
           <p>© {new Date().getFullYear()} Skreytumhús.is · Allur réttur áskilinn</p>
           <p className="max-w-xl md:text-right">
             Hönnunartillaga. Efni er lesið beint af{' '}

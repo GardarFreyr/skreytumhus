@@ -187,8 +187,8 @@ Every article has a heart button, in the header next to the reading time and aga
 - If the service can't be reached, the button is hidden rather than showing a wrong number.
 - `npm run test:likes` tests the rules against a mock store. `BASE_URL=https://skreytumhus.netlify.app npm run check:likes` tests the real thing in two separate browsers and removes its test likes afterwards.
 
-## Back to top
+## Footer: white logo and "Fara efst"
 
-A round "Fara efst" button appears bottom-right after about 500px of scrolling, on every page.
-- It scrolls smoothly, or jumps when the visitor prefers reduced motion. Keyboard focus moves to the top of the content.
-- On wide screens it sits in the margin outside the ad column. Whenever it would cover an ad (for example the ad block on mobile), it hides.
+- **Logo:** the footer uses `public/brand/logo-white.(webp|png)`, a transparent all-white version of the original logo, including the script "Skreytum", the serif "Hús" and the hearts. It was extracted from the owner's white logo file by keeping only the white lettering, without the dark glow. It is 1335 px wide, so it stays sharp on retina screens.
+- **Button:** a centred, light "Fara efst" button (52 px high) sits under the footer columns. It scrolls smoothly to the top, or jumps when the visitor prefers reduced motion. The earlier floating corner arrow was removed.
+- `npm run check:footer` checks both at 390, 768, 1440 and 1920 px: the logo pixels are white and the hearts are present, the button is centred and overlaps nothing, and clicking it returns to the top.

@@ -1,5 +1,5 @@
 /**
- * Vafrapróf: like-hnappur og „Fara efst“.
+ * Vafrapróf: like-hnappur.
  *
  *  BASE_URL=https://skreytumhus.netlify.app npm run check:likes   → raunverulegt API (like eru tekin til baka í lokin)
  *  npm run check:likes                                             → staðbundið (vite preview); API líkt eftir í prófinu
@@ -114,53 +114,6 @@ try {
   ok((await state(a))[0].count === start, `prófun tekin til baka: talan aftur ${start}`)
   await ctxA.close(); await ctxB.close()
 
-  console.log('Fara efst:')
-  for (const [w, h] of [[1440, 900], [1280, 800], [768, 1024], [390, 844]]) {
-    const page = await browser.newPage()
-    await page.setViewport({ width: w, height: h })
-    await mock(page, 'C')
-    await page.goto(BASE + ARTICLE, { waitUntil: 'networkidle2', timeout: 60000 })
-    await page.waitForSelector('button[aria-label="Fara efst"]')
-    const vis = () => page.evaluate(() => getComputedStyle(document.querySelector('button[aria-label="Fara efst"]')).opacity === '1')
-    await sleep(400)
-    const atTop = await vis()
-    await page.evaluate(() => window.scrollTo(0, 300)); await sleep(500)
-    const at300 = await vis()
-    await page.evaluate(() => window.scrollTo(0, 900)); await sleep(500)
-    const at900 = await vis()
-    // Skrunar alla síðuna: hnappurinn má aldrei sjást ofan á auglýsingu
-    const covered = await page.evaluate(async () => {
-      const btn = document.querySelector('button[aria-label="Fara efst"]')
-      const hits = []
-      for (let y = 600; y < document.documentElement.scrollHeight; y += 120) {
-        window.scrollTo(0, y)
-        await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)))
-        await new Promise((r) => setTimeout(r, 30))
-        if (btn.dataset.visible !== 'true') continue
-        const b = btn.getBoundingClientRect()
-        for (const f of document.querySelectorAll('aside[aria-label="Auglýsingar"] figure')) {
-          const r = f.getBoundingClientRect()
-          if (b.left < r.right && b.right > r.left && b.top < r.bottom && b.bottom > r.top) hits.push(y)
-        }
-      }
-      return hits
-    })
-    await page.evaluate(() => window.scrollTo(0, 2000)); await sleep(500)
-    await page.click('button[aria-label="Fara efst"]')
-    await sleep(1600)
-    const y = await page.evaluate(() => window.scrollY)
-    const hidden = !(await vis())
-    ok(!atTop && !at300 && at900 && covered.length === 0 && y === 0 && hidden,
-      `${w}px: falinn efst/300px=${!atTop && !at300}, sýnilegur 900px=${at900}, hylur aldrei auglýsingu=${covered.length === 0}, fer efst=${y === 0}`)
-    if (w === 390) {
-      await page.emulateMediaFeatures([{ name: 'prefers-reduced-motion', value: 'reduce' }])
-      await page.evaluate(() => window.scrollTo(0, 2500)); await sleep(500)
-      await page.click('button[aria-label="Fara efst"]')
-      const yNow = await page.evaluate(() => new Promise((r) => requestAnimationFrame(() => r(window.scrollY))))
-      ok(yNow === 0, `minni hreyfing (reduced motion): stekkur beint efst (${yNow})`)
-    }
-    await page.close()
-  }
 } finally {
   await browser.close()
 }

@@ -13,7 +13,8 @@
     "check:routes": "node scripts/stale-tab-check.mjs",
     "test:instagram": "node scripts/instagram-feed-test.mts",
     "test:likes": "node scripts/likes-test.mts",
-    "check:likes": "node scripts/likes-ui-check.mjs"
+    "check:likes": "node scripts/likes-ui-check.mjs",
+    "check:footer": "node scripts/footer-check.mjs"
   },
   "dependencies": {
     "@fontsource-variable/dm-sans": "^5.2.6",
