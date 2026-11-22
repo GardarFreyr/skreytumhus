@@ -12,7 +12,8 @@ function ScrollToTop() {
 }
 
 function PageFallback() {
-  return <div className="min-h-[70vh]" aria-busy="true" />
+  // Heldur fætinum neðan við fyrstu sýn meðan síðukóðinn hleðst (kemur í veg fyrir layout shift)
+  return <div className="min-h-[100svh]" aria-busy="true" />
 }
 
 export function Layout() {

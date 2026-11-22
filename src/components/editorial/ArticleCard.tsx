@@ -49,7 +49,7 @@ export function ArticleCard({ article, variant = 'small', priority, to, headingL
 
   if (variant === 'lead') {
     return (
-      <Link to={href} className="group grid gap-6 md:grid-cols-12 md:items-center md:gap-10">
+      <Link to={href} className="group grid grid-cols-1 gap-6 md:grid-cols-12 md:items-center md:gap-10">
         <div className={`md:col-span-7 ${flip ? 'md:order-2' : ''}`}>
           <Img pic={article.image} ratio={RATIO.CARD} sizes="(min-width: 768px) 55vw, 100vw" priority={priority} />
         </div>
@@ -77,7 +77,7 @@ export function ArticleCard({ article, variant = 'small', priority, to, headingL
 
   const medium = variant === 'medium'
   return (
-    <Link to={href} className="group flex flex-col">
+    <Link to={href} className="group flex min-w-0 flex-col">
       <Img
         pic={article.image}
         ratio={RATIO.CARD}

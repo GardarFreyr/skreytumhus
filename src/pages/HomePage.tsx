@@ -11,6 +11,8 @@ import { MagazineGrid } from '../components/editorial/MagazineGrid'
 import { BeforeAfter } from '../components/editorial/BeforeAfter'
 import { Img, RATIO } from '../components/ui/Img'
 import { AdCluster, AdRail } from '../components/ads/Ads'
+import { HERO_MEDIA_CLASS, SplitHero } from '../components/layout/SplitHero'
+import { PhotoCaption } from '../components/ui/PhotoCaption'
 import { CardSkeletons, ErrorState, SectionHeader } from '../components/ui/States'
 import { topics } from '../data/taxonomy'
 import { seasons } from '../data/tv'
@@ -44,11 +46,11 @@ export default function HomePage() {
     <>
       <Hero state={latest} />
 
-      <section aria-labelledby="nyjast" className="wrap pt-28 lg:pt-40">
+      <section aria-labelledby="nyjast" className="wrap sec-t">
         <SectionHeader eyebrow="Nýjast á blogginu" title={<>Nýjustu <em>færslurnar</em></>} id="nyjast">
           <Link to="/greinar" className="btn btn-line">Allar greinar <ArrowRight size={16} aria-hidden /></Link>
         </SectionHeader>
-        <div className="mt-14 lg:mt-20 xl:grid xl:grid-cols-[minmax(0,1fr)_202px] xl:gap-16">
+        <div className="blk-mt xl:grid xl:grid-cols-[minmax(0,1fr)_202px] xl:gap-16">
           <div className="min-w-0">
             {latest.status === 'success' ? (
               <MagazineGrid items={latest.data.items.slice(1, 7)} />
@@ -61,7 +63,7 @@ export default function HomePage() {
           {/* Auglýsingar: hliðarstika á stórum skjám, hólf milli efnishluta annars */}
           <AdRail className="hidden xl:block" />
         </div>
-        <AdCluster className="mt-24 xl:hidden" />
+        <AdCluster className="blk-mt xl:hidden" />
       </section>
 
       <Topics byId={byId} />
@@ -77,49 +79,49 @@ function Hero({ state }: { state: ReturnType<typeof useArticles> }) {
   if (state.status === 'error') return <ErrorState error={state.error} />
   const [a, ...rest] = state.data?.items ?? []
   return (
-    <section aria-label="Forsíðugrein" className="wrap pt-6 lg:pt-10">
-      <div className="grid gap-10 lg:grid-cols-12 lg:gap-14">
-        <div className="order-2 flex flex-col justify-between gap-12 lg:order-1 lg:col-span-5 lg:py-6">
-          {a ? (
-            <div className="animate-rise">
-              <Meta article={a} />
-              <h1 className="display mt-6 text-[clamp(2.9rem,6.2vw,6.4rem)]">
-                <Link to={`/greinar/${a.slug}`} className="hover:text-taupe-ink">{a.title}</Link>
-              </h1>
-              {a.excerpt && <p className="mt-7 max-w-[34rem] text-[17.5px] leading-[1.75] text-muted">{truncate(a.excerpt, 260)}</p>}
-              <Link to={`/greinar/${a.slug}`} className="btn btn-dark mt-9">Lesa greinina <ArrowRight size={16} aria-hidden /></Link>
-            </div>
-          ) : (
-            <div aria-busy="true"><div className="skeleton h-3 w-40" /><div className="skeleton mt-6 h-24 w-full" /><div className="skeleton mt-6 h-20 w-4/5" /></div>
-          )}
-          {rest.length > 0 && (
-            <div className="hidden border-t border-line pt-6 lg:block">
-              <h2 className="eyebrow mb-5">Einnig nýlegt</h2>
-              <ul className="space-y-5">
-                {rest.slice(0, 2).map((r) => (
-                  <li key={r.id}><ArticleCard article={r} variant="row" /></li>
-                ))}
-              </ul>
-            </div>
-          )}
+    <SplitHero
+      label="Forsíðugrein"
+      className="pt-6 lg:pt-10"
+      mediaFirstOnMobile
+      media={
+        a ? (
+          <Link to={`/greinar/${a.slug}`} className="group block" tabIndex={-1} aria-hidden>
+            <Img pic={a.image} ratio="5 / 4" sizes="(min-width: 1024px) 58vw, 100vw" priority className={`animate-fade ${HERO_MEDIA_CLASS}`} />
+          </Link>
+        ) : (
+          <div className={`skeleton ${HERO_MEDIA_CLASS}`} style={{ aspectRatio: '5 / 4' }} />
+        )
+      }
+    >
+      {a ? (
+        <div className="animate-rise">
+          <Meta article={a} />
+          <h1 className="display mt-5 text-[clamp(2.7rem,5vw,5.4rem)]">
+            <Link to={`/greinar/${a.slug}`} className="hover:text-taupe-ink">{a.title}</Link>
+          </h1>
+          {a.excerpt && <p className="mt-6 max-w-[34rem] text-[17px] leading-[1.7] text-muted">{truncate(a.excerpt, 220)}</p>}
+          <Link to={`/greinar/${a.slug}`} className="btn btn-dark mt-8">Lesa greinina <ArrowRight size={16} aria-hidden /></Link>
         </div>
-        <div className="order-1 lg:order-2 lg:col-span-7">
-          {a ? (
-            <Link to={`/greinar/${a.slug}`} className="group block" tabIndex={-1} aria-hidden>
-              <Img pic={a.image} ratio="4 / 4.7" sizes="(min-width: 1024px) 58vw, 100vw" priority className="animate-fade" />
-            </Link>
-          ) : (
-            <div className="skeleton" style={{ aspectRatio: '4 / 4.7' }} />
-          )}
+      ) : (
+        <div aria-busy="true"><div className="skeleton h-3 w-40" /><div className="skeleton mt-6 h-24 w-full" /><div className="skeleton mt-6 h-20 w-4/5" /></div>
+      )}
+      {rest.length > 0 && (
+        <div className="mt-10 hidden border-t border-line pt-6 2xl:block">
+          <h2 className="eyebrow mb-5">Einnig nýlegt</h2>
+          <ul className="space-y-4">
+            {rest.slice(0, 2).map((r) => (
+              <li key={r.id}><ArticleCard article={r} variant="row" /></li>
+            ))}
+          </ul>
         </div>
-      </div>
-    </section>
+      )}
+    </SplitHero>
   )
 }
 
 function Topics({ byId }: { byId: Map<number, ArticleSummary> }) {
   return (
-    <section aria-labelledby="flokkar" className="mt-32 bg-cream py-24 lg:mt-44 lg:py-32">
+    <section aria-labelledby="flokkar" className="sec-mt sec-y bg-cream">
       <div className="wrap">
         <SectionHeader eyebrow="Efnisflokkar" title={<>Hvar viltu <em>byrja?</em></>} id="flokkar">
           <p className="max-w-sm text-[16px] leading-relaxed text-muted">
@@ -127,19 +129,18 @@ function Topics({ byId }: { byId: Map<number, ArticleSummary> }) {
           </p>
         </SectionHeader>
         {/* Jafnstórar flísar; síðasta röð er miðjusett svo 5 flokkar haldist í jafnvægi á öllum breiddum */}
-        <ul className="mt-14 flex flex-wrap justify-center gap-3 sm:gap-4 lg:mt-20">
+        <ul className="blk-mt flex flex-wrap justify-center gap-3 sm:gap-4">
           {topics.map((t, i) => {
             const cover = byId.get(t.coverPostId)
             return (
-              <li key={t.slug} className="w-[calc((100%-0.75rem)/2)] sm:w-[calc((100%-2rem)/3)] lg:w-[calc((100%-4rem)/5)]">
-                <Link to={`/flokkur/${t.slug}`} className="group relative block text-ivory">
-                  <Img pic={cover?.image} ratio={RATIO.TILE} sizes="(min-width:1024px) 20vw, (min-width:640px) 33vw, 50vw" />
-                  <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-night/70 via-night/10 to-transparent" />
-                  <div className="absolute inset-x-0 bottom-0 p-4 sm:p-6 lg:p-8">
-                    <span className="text-[11px] uppercase tracking-[0.24em] text-ivory/85">0{i + 1}</span>
-                    <h3 className="display mt-1 flex min-h-[2lh] items-end text-[clamp(1.45rem,2vw,2rem)]">{t.name}</h3>
-                    <p className="mt-2 line-clamp-2 hidden min-h-[2lh] max-w-xs text-[13.5px] leading-snug text-ivory/85 sm:block">{t.description}</p>
-                  </div>
+              <li key={t.slug} className="w-[calc((100%-0.75rem)/2)] sm:w-[calc((100%-2rem)/3)] xl:w-[calc((100%-4rem)/5)]">
+                <Link to={`/flokkur/${t.slug}`} className="group relative block overflow-hidden text-white">
+                  <Img pic={cover?.image} ratio={RATIO.TILE} sizes="(min-width:1280px) 20vw, (min-width:640px) 33vw, 50vw" />
+                  <PhotoCaption className="[--scrim-fade:2.5rem] sm:[--scrim-fade:3rem] xl:px-6 xl:pb-6">
+                    <span className="text-[11px] font-medium uppercase tracking-[0.24em] text-white/90">0{i + 1}</span>
+                    <h3 className="display mt-1 flex min-h-[2lh] items-end text-[clamp(1.5rem,2vw,2.05rem)] font-medium [overflow-wrap:anywhere]">{t.name.replace("Herbergisbreytingar", "Herbergis\u00ADbreytingar")}</h3>
+                    <p className="mt-2 line-clamp-2 hidden min-h-[2lh] max-w-xs text-[14px] font-medium leading-snug text-white xl:block">{t.description}</p>
+                  </PhotoCaption>
                 </Link>
               </li>
             )
@@ -153,7 +154,7 @@ function Topics({ byId }: { byId: Map<number, ArticleSummary> }) {
 function Transformation({ article }: { article?: ArticleSummary }) {
   const href = article ? `/herbergisbreytingar/${article.slug}` : `/p/${featuredTransformation.postId}`
   return (
-    <section aria-labelledby="breyting" className="wrap py-28 lg:py-40">
+    <section aria-labelledby="breyting" className="wrap sec-y">
       <div className="grid items-center gap-12 lg:grid-cols-12 lg:gap-20">
         <div className="lg:col-span-6 xl:col-span-5">
           <BeforeAfter before={featuredTransformation.before} after={featuredTransformation.after} />
@@ -181,7 +182,7 @@ const PORTRAIT = 'https://www.skreytumhus.is/wp-content/uploads/2020/12/www.skre
 
 function MeetSoffia() {
   return (
-    <section aria-labelledby="soffia" className="bg-stone/45 py-28 lg:py-36">
+    <section aria-labelledby="soffia" className="bg-stone/45 sec-y">
       <div className="wrap grid items-center gap-14 lg:grid-cols-12 lg:gap-20">
         <div className="relative mx-auto w-full max-w-md lg:col-span-5 lg:max-w-none">
           <div className="frame" style={{ aspectRatio: '4 / 5' }}>
@@ -216,7 +217,7 @@ function TvTeaser({ byId, loading }: { byId: Map<number, ArticleSummary>; loadin
   const eps = latestSeason.episodes.map((e) => ({ ...e, post: byId.get(e.postId) })).filter((e) => e.post)
   const [feature, ...others] = eps
   return (
-    <section aria-labelledby="tv" className="bg-night py-28 text-ivory lg:py-36">
+    <section aria-labelledby="tv" className="bg-night sec-y text-ivory">
       <div className="wrap">
         <div className="flex flex-wrap items-end justify-between gap-6">
           <div>
@@ -270,7 +271,7 @@ function TvTeaser({ byId, loading }: { byId: Map<number, ArticleSummary>; loadin
 
 function ArchiveBand({ total }: { total?: number }) {
   return (
-    <section aria-labelledby="safnid" className="wrap py-28 lg:py-36">
+    <section aria-labelledby="safnid" className="wrap sec-y">
       <div className="grid gap-14 lg:grid-cols-12">
         <div className="lg:col-span-5">
           <p className="eyebrow">Safnið</p>

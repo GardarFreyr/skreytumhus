@@ -6,7 +6,7 @@ export default function NotFoundPage() {
   const navigate = useNavigate()
   useSeo({ title: 'Síða fannst ekki' })
   return (
-    <section className="wrap grid min-h-[70vh] items-center py-24">
+    <section className="wrap sec-y">
       <div className="mx-auto max-w-2xl text-center">
         <p className="eyebrow">Villa 404</p>
         <h1 className="display mt-6 text-[clamp(3rem,8vw,6.5rem)]">

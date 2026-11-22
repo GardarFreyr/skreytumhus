@@ -4,6 +4,7 @@ import { useArticles } from '../features/articles/hooks'
 import { useSeo } from '../lib/seo'
 import { Img, RATIO } from '../components/ui/Img'
 import { Meta } from '../components/editorial/ArticleCard'
+import { PhotoCaption } from '../components/ui/PhotoCaption'
 import { CardSkeletons, EmptyState, ErrorState } from '../components/ui/States'
 import { INSPIRATION_DEFAULT_IDS, inspirationFilters } from '../data/taxonomy'
 
@@ -28,7 +29,7 @@ export default function InspirationPage() {
   }
 
   return (
-    <div className="pb-32">
+    <div className="sec-b">
       <header className="wrap grid gap-8 pt-10 lg:grid-cols-12 lg:items-end lg:pt-16">
         <div className="lg:col-span-7">
           <p className="eyebrow">Sjónræn uppgötvun</p>
@@ -72,13 +73,12 @@ function Chunk({ cats, page, isLast, onMore }: { cats: number[]; page: number; i
       <ul className="tile-grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
         {items.map((a, i) => (
           <li key={a.id}>
-            <Link to={`/greinar/${a.slug}`} className="group relative block overflow-hidden text-ivory">
+            <Link to={`/greinar/${a.slug}`} className="group relative block overflow-hidden text-white">
               <Img pic={a.image} ratio={RATIO.TILE} sizes="(min-width: 1024px) 25vw, (min-width: 768px) 33vw, 50vw" priority={page === 1 && i < 2} />
-              <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-night/70 via-transparent to-transparent opacity-90 transition-opacity duration-500 md:opacity-0 md:group-hover:opacity-100 md:group-focus-visible:opacity-100" />
-              <div className="absolute inset-x-0 bottom-0 p-4 transition-all duration-500 sm:p-5 md:translate-y-3 md:opacity-0 md:group-hover:translate-y-0 md:group-hover:opacity-100 md:group-focus-visible:translate-y-0 md:group-focus-visible:opacity-100">
+              <PhotoCaption reveal>
                 <Meta article={a} light compact />
-                <h2 className="display mt-2 line-clamp-3 text-[clamp(1.2rem,1.7vw,1.7rem)]">{a.title}</h2>
-              </div>
+                <h2 className="display mt-2 line-clamp-3 text-[clamp(1.25rem,1.7vw,1.7rem)] font-medium [overflow-wrap:anywhere] hyphens-auto">{a.title}</h2>
+              </PhotoCaption>
             </Link>
           </li>
         ))}

@@ -22,7 +22,7 @@ export default function TvPage() {
   const featurePost = byId.get(feature.postId)
 
   return (
-    <div className="bg-night pb-32 text-ivory">
+    <div className="bg-night sec-b text-ivory">
       <header className="wrap pt-10 lg:pt-16">
         <p className="eyebrow !text-ivory/65">Sjónvarpsþættirnir</p>
         <h1 className="display mt-5 text-[clamp(3.2rem,8vw,7.4rem)]">Skreytum Hús <em className="text-sage">TV</em></h1>
@@ -35,7 +35,7 @@ export default function TvPage() {
       {posts.status === 'loading' && <div className="wrap mt-14"><div className="aspect-video bg-ivory/5" aria-busy="true" /></div>}
 
       {featurePost && (
-        <section aria-labelledby="nyjasti" className="wrap mt-14 grid gap-10 lg:mt-20 lg:grid-cols-12 lg:items-end lg:gap-14">
+        <section aria-labelledby="nyjasti" className="wrap blk-mt grid gap-10 lg:grid-cols-12 lg:items-center lg:gap-14">
           <Link to={`/greinar/${featurePost.slug}`} className="group relative block lg:col-span-8">
             <Img pic={featurePost.image} ratio="16 / 9" sizes="(min-width:1024px) 66vw, 100vw" priority />
             <span className="absolute inset-0 grid place-items-center">
@@ -58,7 +58,7 @@ export default function TvPage() {
 
       {posts.data &&
         seasons.map((s) => (
-          <section key={s.number} aria-labelledby={`s${s.number}`} className="wrap mt-24 border-t border-ivory/15 pt-12 lg:mt-32">
+          <section key={s.number} aria-labelledby={`s${s.number}`} className="wrap sec-mt border-t border-ivory/15 pt-12">
             <div className="flex flex-wrap items-baseline justify-between gap-4">
               <h2 id={`s${s.number}`} className="display text-[clamp(2.2rem,4vw,3.6rem)]">Þáttaröð {s.number}</h2>
               <p className="text-[13px] uppercase tracking-[0.2em] text-ivory/60">{s.year} · {s.episodes.length} þættir</p>
@@ -72,7 +72,7 @@ export default function TvPage() {
         ))}
 
       {posts.data && (
-        <section aria-labelledby="diy" className="wrap mt-24 border-t border-ivory/15 pt-12 lg:mt-32">
+        <section aria-labelledby="diy" className="wrap sec-mt border-t border-ivory/15 pt-12">
           <h2 id="diy" className="display text-[clamp(2.2rem,4vw,3.6rem)]">Stuttir <em className="text-sage">DIY-þættir</em></h2>
           <ul className="card-grid mt-10 grid-cols-2 lg:grid-cols-4">
             {diyClips.map((e) => <EpisodeCard key={e.postId} e={e} post={byId.get(e.postId)} compact />)}
@@ -82,7 +82,7 @@ export default function TvPage() {
 
       {posts.status === 'loading' && <div className="wrap mt-20"><CardSkeletons className="card-grid sm:grid-cols-3" count={3} /></div>}
 
-      <aside className="wrap mt-28">
+      <aside className="wrap sec-mt">
         <div className="border border-ivory/20 p-8 sm:p-12">
           <p className="eyebrow !text-ivory/65">Um áhorf</p>
           <p className="mt-4 max-w-3xl text-[15.5px] leading-relaxed text-ivory/75">

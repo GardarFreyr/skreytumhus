@@ -2,7 +2,7 @@
 
 /* ── Hönnunarkerfi Skreytum Hús ─────────────────────────────── */
 @theme {
-  --font-display: "Cormorant Garamond", "Cormorant", Georgia, serif;
+  --font-display: "Cormorant Garamond", "Cormorant Fallback", Georgia, serif;
   --font-sans: "DM Sans Variable", "DM Sans", system-ui, sans-serif;
 
   --color-ivory: #F7F5F0;
@@ -32,6 +32,13 @@
   }
 }
 
+/*
+ * Varaletur með sömu málum og Cormorant Garamond (mælt: Georgia er 12,6 % breiðari).
+ * Fyrirsagnir brotna því eins áður og eftir að vefletrið hleðst — ekkert layout shift.
+ */
+@font-face { font-family: "Cormorant Fallback"; src: local("Georgia"), local("Times New Roman"); size-adjust: 88.8%; ascent-override: 103.6%; descent-override: 32.7%; line-gap-override: 0%; }
+@font-face { font-family: "Cormorant Fallback"; font-style: italic; src: local("Georgia Italic"), local("Georgia"); size-adjust: 88.8%; ascent-override: 103.6%; descent-override: 32.7%; line-gap-override: 0%; }
+
 @layer base {
   html { -webkit-text-size-adjust: 100%; scroll-padding-top: 96px; }
   body {
@@ -56,10 +63,36 @@
   .frame > img { @apply absolute inset-0 h-full w-full object-cover; transform: scale(1.07); transition: transform 1.4s var(--ease-editorial); }
   .group:hover .frame > img, .frame.zoom:hover > img { transform: scale(1.11); }
 
+  /*
+   * Bilakerfi: tvö gildi fyrir allan vefinn í stað handvalinna stórra bila.
+   *  --space-section: milli hluta (72 px á síma → 112 px á breiðum skjá)
+   *  --space-block:   milli fyrirsagnar og efnis innan hluta (40 → 64 px)
+   */
+  :root { --space-section: clamp(4.5rem, 3rem + 4vw, 7rem); --space-block: clamp(2.5rem, 1.75rem + 2vw, 4rem); }
+  .sec-y { padding-block: var(--space-section); }
+  .sec-t { padding-top: var(--space-section); }
+  .sec-b { padding-bottom: var(--space-section); }
+  .sec-mt { margin-top: var(--space-section); }
+  .blk-mt { margin-top: var(--space-block); }
+  .blk-pt { padding-top: var(--space-block); }
+
+  /*
+   * Texti ofan á ljósmynd: .scrim er dökkur halli sem byrjar gegnsær og nær ≥ 72 % þekju
+   * þar sem textinn byrjar (eftir --scrim-fade). Á alhvítri mynd gefur það fílabeinshvítum
+   * texta ≥ 5:1 birtuskil (WCAG AA fyrir venjulegan texta), óháð myndinni undir.
+   * .photo-shade dekkir alla myndina örlítið svo umskiptin verði mjúk.
+   */
+  .photo-shade { position: absolute; inset: 0; pointer-events: none;
+    background: linear-gradient(to bottom, rgb(20 19 17 / 0.04) 0%, rgb(20 19 17 / 0.18) 45%, rgb(20 19 17 / 0.45) 100%); }
+  .scrim { --scrim-fade: 3rem; position: relative; padding-top: var(--scrim-fade);
+    background: linear-gradient(to top, rgb(20 19 17 / 0.86) 0%, rgb(20 19 17 / 0.74) calc(100% - var(--scrim-fade)), rgb(20 19 17 / 0) 100%);
+    color: #fff; text-shadow: 0 1px 2px rgb(0 0 0 / 0.35); }
+  @media (min-width: 640px) { .scrim { --scrim-fade: 4.5rem; } }
+
   /* Ein sameiginleg spjaldagrind: sömu bil milli dálka og raða alls staðar, engin hliðrun */
-  .card-grid { display: grid; column-gap: 1.5rem; row-gap: 3.5rem; align-items: start; }
+  .card-grid { display: grid; grid-template-columns: minmax(0, 1fr); column-gap: 1.5rem; row-gap: 3.5rem; align-items: start; }
   @media (min-width: 1024px) { .card-grid { column-gap: 2.5rem; row-gap: 4rem; } }
-  .tile-grid { display: grid; gap: 0.75rem; align-items: start; }
+  .tile-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.75rem; align-items: start; }
   @media (min-width: 640px) { .tile-grid { gap: 1rem; } }
 
   .link-u {

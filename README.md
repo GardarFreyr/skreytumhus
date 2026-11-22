@@ -115,3 +115,7 @@ The three advertisers in the live site's AdRotate sidebar appear here with their
 **Labelling:** every banner is marked “Auglýsing” with the advertiser's name, sits in its own frame, and links with `rel="sponsored"` in a new tab.
 
 **Not included:** the live sidebar also has a Skreytum Hús TV / Vísir promo. It isn't a third-party advert, and the TV page already covers the show. The banners are only 200px wide at source, so they are never shown larger than that. Clicks are not counted (the live site uses AdRotate tracking).
+
+## Layout regression check
+
+`npm run check:layout` runs `scripts/layout-check.mjs` (puppeteer-core + local Chrome) against `vite preview` on port 4173 (override with `BASE_URL`, `WIDTHS`, `ROUTES`). At 390, 768, 1024, 1440 and 1920px it fails on: empty hero space or a title below the first viewport, caption text outside the photo scrim, uneven card rows, large blank gaps, clipped text, horizontal overflow, broken or non-`cover` images, and CLS ≥ 0.1. Screenshots and `report.json` go to `layout-report/` (git-ignored).

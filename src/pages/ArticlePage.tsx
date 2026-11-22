@@ -8,6 +8,7 @@ import { plainText, truncate } from '../lib/html'
 import { ArticleBody } from '../components/editorial/ArticleBody'
 import { ArticleCard } from '../components/editorial/ArticleCard'
 import { AdCluster, AdRail } from '../components/ads/Ads'
+import { HERO_MEDIA_CLASS, SplitHero } from '../components/layout/SplitHero'
 import { ShareBar } from '../components/editorial/ShareBar'
 import { Img } from '../components/ui/Img'
 import { ErrorState } from '../components/ui/States'
@@ -68,39 +69,70 @@ function ArticleView({ a, variant }: { a: Article; variant: 'article' | 'project
         </button>
       </div>
 
-      <header className={`wrap mt-6 grid gap-10 lg:mt-10 ${isProject ? '' : 'lg:grid-cols-12 lg:items-end lg:gap-14'}`}>
-        <div className={isProject ? 'mx-auto max-w-4xl text-center' : 'lg:col-span-6'}>
+      {(() => {
+        const eyebrow = (
           <p className="eyebrow">
             {isProject ? 'Herbergisbreyting' : a.categories.slice(0, 2).map((c, i) => (
               <span key={c.id}>{i > 0 && ' · '}<Link to={`/flokkur/${c.slug}`} className="link-u">{c.name}</Link></span>
             ))}
           </p>
-          <h1 className="display mt-6 text-[clamp(2.7rem,6vw,5.8rem)]">{a.title}</h1>
-          <p className={`mt-7 flex flex-wrap items-center gap-x-4 gap-y-2 text-[14px] text-muted ${isProject ? 'justify-center' : ''}`}>
+        )
+        const meta = (
+          <p className={`mt-6 flex flex-wrap items-center gap-x-4 gap-y-2 text-[14px] text-muted ${isProject ? 'justify-center' : ''}`}>
             <span>Eftir <span className="text-charcoal">{a.author}</span></span>
             <span aria-hidden>·</span>
             <time dateTime={a.date}>{formatDate(a.date)}</time>
             <span aria-hidden>·</span>
             <span>{minutes} mín. lestur</span>
           </p>
-          {a.sponsored && (
-            <p className="mt-6 inline-block border border-stone px-4 py-2 text-[13px] text-muted">
-              <strong className="font-medium text-charcoal">Samstarf.</strong> Þessi færsla er merkt sem samstarf í upprunalega blogginu.
-            </p>
-          )}
-        </div>
-        {a.image && (
-          <div className={isProject ? '' : 'lg:col-span-6'}>
-            <Img pic={a.image} ratio={isProject ? '16 / 9' : '4 / 5'} sizes={isProject ? '100vw' : '(min-width:1024px) 48vw, 100vw'} priority />
-          </div>
-        )}
-      </header>
+        )
+        const sponsored = a.sponsored && (
+          <p className="mt-6 inline-block border border-stone px-4 py-2 text-[13px] text-muted">
+            <strong className="font-medium text-charcoal">Samstarf.</strong> Þessi færsla er merkt sem samstarf í upprunalega blogginu.
+          </p>
+        )
 
-      <div className="wrap mt-16 lg:mt-24 xl:grid xl:grid-cols-[minmax(0,1fr)_202px] xl:gap-16">
+        // Verkefni og greinar án myndar: miðjaður haus, mynd (ef til) í fullri breidd undir.
+        if (isProject || !a.image) {
+          return (
+            <header data-hero className="wrap mt-6 lg:mt-8">
+              <div className={`mx-auto max-w-4xl ${isProject ? 'text-center' : ''}`}>
+                {eyebrow}
+                <h1 className="display mt-5 text-[clamp(2.6rem,5.4vw,5.2rem)]">{a.title}</h1>
+                {meta}
+                {sponsored}
+              </div>
+              {a.image && (
+                <div className="blk-mt">
+                  <Img pic={a.image} ratio="16 / 9" sizes="100vw" priority className={HERO_MEDIA_CLASS} />
+                </div>
+              )}
+            </header>
+          )
+        }
+
+        // Grein með mynd: texti og mynd hlið við hlið, miðjuð saman — ekkert tómt svæði ofan við titil.
+        return (
+          <SplitHero
+            label="Haus greinar"
+            className="mt-6 lg:mt-8"
+            media={<Img pic={a.image} ratio="4 / 3" sizes="(min-width:1024px) 56vw, 100vw" priority className={HERO_MEDIA_CLASS} />}
+          >
+            <header>
+              {eyebrow}
+              <h1 className="display mt-5 text-[clamp(2.5rem,4.4vw,4.6rem)]">{a.title}</h1>
+              {meta}
+              {sponsored}
+            </header>
+          </SplitHero>
+        )
+      })()}
+
+      <div className="wrap blk-mt xl:grid xl:grid-cols-[minmax(0,1fr)_202px] xl:gap-16">
         <div className="min-w-0">
         <ArticleBody html={a.html} />
 
-        <footer className="mx-auto mt-20 flex max-w-[680px] flex-col gap-8 border-t border-line pt-10">
+        <footer className="mx-auto blk-mt flex max-w-[680px] flex-col gap-8 border-t border-line pt-10">
           <ShareBar title={a.title} url={a.link} />
           {a.tags.length > 0 && (
             <ul className="flex flex-wrap gap-2" aria-label="Merki">
@@ -123,14 +155,14 @@ function ArticleView({ a, variant }: { a: Article; variant: 'article' | 'project
 
       {/* Auglýsingar á minni skjám: á eftir greininni, áður en tengdar færslur koma */}
       <div className="wrap xl:hidden">
-        <AdCluster className="mx-auto mt-20 max-w-[680px]" />
+        <AdCluster className="mx-auto blk-mt max-w-[680px]" />
       </div>
 
       {related.data && related.data.items.length > 0 && (
-        <section aria-labelledby="tengt" className="mt-32 bg-cream py-24">
+        <section aria-labelledby="tengt" className="sec-mt sec-y bg-cream">
           <div className="wrap">
             <h2 id="tengt" className="display text-[clamp(2.2rem,4vw,3.6rem)]">Þér gæti <em>líka líkað</em></h2>
-            <div className="card-grid mt-12 sm:grid-cols-3">
+            <div className="card-grid blk-mt sm:grid-cols-3">
               {related.data.items.map((r) => <ArticleCard key={r.id} article={r} />)}
             </div>
           </div>
@@ -141,14 +173,18 @@ function ArticleView({ a, variant }: { a: Article; variant: 'article' | 'project
 }
 
 function ArticleSkeleton() {
+  // Sama form og SplitHero-hausinn, svo ekkert hoppi þegar greinin hleðst
   return (
-    <div className="wrap grid gap-10 pt-16 lg:grid-cols-12" aria-busy="true" aria-label="Hleð grein">
-      <div className="lg:col-span-6">
+    <div aria-busy="true" aria-label="Hleð grein" className="min-h-[100svh]">
+      <div className="wrap pt-6 lg:pt-10"><div className="skeleton h-11 w-28" /></div>
+      <SplitHero
+        className="mt-6 lg:mt-8"
+        media={<div className={`skeleton w-full ${HERO_MEDIA_CLASS}`} style={{ aspectRatio: '4 / 3' }} />}
+      >
         <div className="skeleton h-3 w-32" />
         <div className="skeleton mt-6 h-28 w-full" />
         <div className="skeleton mt-6 h-4 w-60" />
-      </div>
-      <div className="skeleton lg:col-span-6" style={{ aspectRatio: '4 / 5' }} />
+      </SplitHero>
     </div>
   )
 }

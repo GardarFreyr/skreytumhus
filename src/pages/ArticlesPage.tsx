@@ -58,7 +58,7 @@ export default function ArticlesPage() {
   const yearQs = year ? `?ar=${year}` : ''
 
   return (
-    <div className="wrap pt-10 pb-32 lg:pt-16">
+    <div className="wrap pt-10 sec-b lg:pt-16">
       <header className="grid gap-10 border-b border-line pb-12 lg:grid-cols-12 lg:items-end">
         <div className="lg:col-span-7">
           <p className="eyebrow">{topic || wpCat.data ? 'Flokkur' : 'Bloggið'}</p>

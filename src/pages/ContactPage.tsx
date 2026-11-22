@@ -20,7 +20,7 @@ export default function ContactPage() {
   const mailto = `mailto:${site.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(`${message}\n\n— ${name}`.trim())}`
 
   return (
-    <div className="wrap pt-10 pb-32 lg:pt-16">
+    <div className="wrap pt-10 sec-b lg:pt-16">
       <div className="grid gap-16 lg:grid-cols-12 lg:gap-20">
         <div className="lg:col-span-5">
           <p className="eyebrow">Samband</p>

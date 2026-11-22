@@ -31,7 +31,7 @@ export default function SearchPage() {
   const results = useArticles(q ? { search: q, page, perPage: 12 } : null)
 
   return (
-    <div className="wrap pt-10 pb-32 lg:pt-16">
+    <div className="wrap pt-10 sec-b lg:pt-16">
       <h1 className="display text-[clamp(3rem,7vw,6.4rem)]">Leit</h1>
       <form
         role="search"

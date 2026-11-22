@@ -13,7 +13,7 @@ const TvPage = lazy(() => import('./pages/TvPage'))
 const AboutPage = lazy(() => import('./pages/AboutPage'))
 const ContactPage = lazy(() => import('./pages/ContactPage'))
 const SearchPage = lazy(() => import('./pages/SearchPage'))
-const NotFoundPage = lazy(() => import('./pages/NotFoundPage'))
+import NotFoundPage from './pages/NotFoundPage'
 
 export const router = createBrowserRouter([
   {

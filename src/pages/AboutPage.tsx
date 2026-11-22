@@ -20,7 +20,7 @@ export default function AboutPage() {
   })
 
   return (
-    <div className="pb-32">
+    <div className="sec-b">
       <header className="wrap grid gap-12 pt-10 lg:grid-cols-12 lg:items-center lg:gap-20 lg:pt-16">
         <div className="lg:col-span-5">
           <div className="frame" style={{ aspectRatio: '4 / 5' }}>
@@ -43,7 +43,7 @@ export default function AboutPage() {
         </div>
       </header>
 
-      <section aria-label="Sagan mín" className="wrap mt-24 lg:mt-32">
+      <section aria-label="Sagan mín" className="wrap sec-mt">
         <p className="eyebrow mx-auto mb-10 max-w-[680px]">Sagan mín — með orðum Soffíu</p>
         {page.status === 'error' && <ErrorState error={page.error} />}
         {page.status === 'loading' && (
@@ -54,7 +54,7 @@ export default function AboutPage() {
         {page.data && <ArticleBody html={page.data.html} />}
       </section>
 
-      <section aria-labelledby="meira" className="wrap mt-28">
+      <section aria-labelledby="meira" className="wrap sec-mt">
         <div className="mx-auto grid max-w-5xl gap-4 sm:grid-cols-3">
           <h2 id="meira" className="sr-only">Meira</h2>
           <Link to="/tv" className="group border border-line p-8 transition-colors hover:bg-cream">

@@ -7,7 +7,7 @@ import { Wordmark } from './Wordmark'
 export function Footer() {
   return (
     <footer className="mt-auto bg-night text-ivory/85">
-      <div className="wrap pt-20 pb-10 lg:pt-28">
+      <div className="wrap sec-t pb-10">
         <div className="grid gap-14 lg:grid-cols-12">
           <div className="lg:col-span-5">
             <Link to="/" title="Forsíða" className="inline-block"><Wordmark light className="h-[64px] lg:h-[84px]" /></Link>
