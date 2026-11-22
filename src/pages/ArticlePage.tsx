@@ -10,6 +10,7 @@ import { ArticleCard } from '../components/editorial/ArticleCard'
 import { AdCluster, AdRail } from '../components/ads/Ads'
 import { HERO_MEDIA_CLASS, SplitHero } from '../components/layout/SplitHero'
 import { ShareBar } from '../components/editorial/ShareBar'
+import { LikeButton } from '../components/editorial/LikeButton'
 import { Img } from '../components/ui/Img'
 import { ErrorState } from '../components/ui/States'
 import NotFoundPage from './NotFoundPage'
@@ -84,6 +85,7 @@ function ArticleView({ a, variant }: { a: Article; variant: 'article' | 'project
             <time dateTime={a.date}>{formatDate(a.date)}</time>
             <span aria-hidden>·</span>
             <span>{minutes} mín. lestur</span>
+            <LikeButton postId={a.id} size="sm" />
           </p>
         )
         const sponsored = a.sponsored && (
@@ -133,6 +135,7 @@ function ArticleView({ a, variant }: { a: Article; variant: 'article' | 'project
         <ArticleBody html={a.html} />
 
         <footer className="mx-auto blk-mt flex max-w-[680px] flex-col gap-8 border-t border-line pt-10">
+          <LikeButton postId={a.id} />
           <ShareBar title={a.title} url={a.link} />
           {a.tags.length > 0 && (
             <ul className="flex flex-wrap gap-2" aria-label="Merki">

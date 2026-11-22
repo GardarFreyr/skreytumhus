@@ -171,3 +171,24 @@ The homepage section "Fylgstu með á Instagram" shows the 6 newest posts, or 4 
 4. In Netlify, go to Site configuration → Environment variables. Add `INSTAGRAM_ACCESS_TOKEN` with the token, scoped to Functions, then redeploy.
 
 After the redeploy, `https://skreytumhus.netlify.app/api/instagram` should return `"status":"ok"` with her posts. From then on, the feed updates and renews its token by itself.
+
+## Article likes (♥)
+
+Every article has a heart button, in the header next to the reading time and again at the end above the share buttons. Visitors don't need to log in.
+
+- **Why not WordPress?** skreytumhus.is has no likes plugin or likes API. Its REST API offers only `wp/v2`, Akismet, BackWPup and WordPress Popular Posts (page views, not likes), so likes are stored here instead. WordPress is not modified.
+- **Storage:** `netlify/functions/likes.mts` (`GET`/`POST /api/likes/:postId`) stores likes in Netlify Blobs (store `likes`, strong consistency). They are shared across all visitors and devices. No extra service, account or credential is needed.
+- **Article ID:** the stable WordPress post ID. The ID is accepted only after WordPress confirms that it is a published post.
+- **One like per visitor:** each visitor gets a random ID in an HttpOnly cookie. A like is stored as one record per visitor and article, so double-clicks and repeated requests never raise the count. The count shown is always the number of stored likes; nothing is invented. Clicking again removes the like.
+- **Abuse protection:**
+  - At most 6 likes per article from one IP address (several people at home can still like), and at most 60 changes per hour from one IP.
+  - Requests from other websites are refused.
+  - IP addresses are stored only as salted hashes.
+- If the service can't be reached, the button is hidden rather than showing a wrong number.
+- `npm run test:likes` tests the rules against a mock store. `BASE_URL=https://skreytumhus.netlify.app npm run check:likes` tests the real thing in two separate browsers and removes its test likes afterwards.
+
+## Back to top
+
+A round "Fara efst" button appears bottom-right after about 500px of scrolling, on every page.
+- It scrolls smoothly, or jumps when the visitor prefers reduced motion. Keyboard focus moves to the top of the content.
+- On wide screens it sits in the margin outside the ad column. Whenever it would cover an ad (for example the ad block on mobile), it hides.

@@ -2,6 +2,7 @@ import { Suspense, useEffect } from 'react'
 import { Outlet, useLocation } from 'react-router'
 import { Header } from './Header'
 import { Footer } from './Footer'
+import { BackToTop } from './BackToTop'
 
 function ScrollToTop() {
   const { pathname, search } = useLocation()
@@ -31,6 +32,7 @@ export function Layout() {
         </Suspense>
       </main>
       <Footer />
+      <BackToTop />
     </div>
   )
 }
