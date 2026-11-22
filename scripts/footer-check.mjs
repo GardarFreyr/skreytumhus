@@ -1,5 +1,5 @@
 /**
- * Vafrapróf fyrir fótinn: hvítt merki og miðjaður „Fara efst“-hnappur.
+ * Vafrapróf fyrir fótinn: hvítt merki (og enginn aukahnappur í fætinum).
  * Keyrsla: npm run check:footer  (BASE_URL=https://skreytumhus.netlify.app fyrir lifandi vef)
  */
 import puppeteer from 'puppeteer-core'
@@ -36,34 +36,18 @@ try {
           const L = (d[i] + d[i + 1] + d[i + 2]) / 3; sum += L; n++; minL = Math.min(minL, L)
           if ((i / 4) % c.width > c.width * 0.75) rightInk++ // hjörtun eru hægra megin
         }
-        const btn = [...footer.querySelectorAll('button')].find((b) => /Fara efst/.test(b.textContent))
-        const br = btn.getBoundingClientRect(), fr = footer.getBoundingClientRect()
-        const wrap = footer.firstElementChild.getBoundingClientRect()
-        const others = [...footer.querySelectorAll('a, p, li, img')].filter((e) => !btn.contains(e)).map((e) => e.getBoundingClientRect())
-        const overlap = others.some((o) => o.width && br.left < o.right && br.right > o.left && br.top < o.bottom && br.bottom > o.top)
-        const style = getComputedStyle(btn)
+        const footerTop = [...footer.querySelectorAll('button')].filter((b) => /Fara efst/.test(b.textContent + b.getAttribute('aria-label'))).length
+        const allTop = document.querySelectorAll('button[aria-label="Fara efst"], button[title="Fara efst"]').length
         return {
           src: img.currentSrc.split('/').pop(), natural: img.naturalWidth, shown: img.getBoundingClientRect().width,
           meanL: Math.round(sum / n), minL, rightInk,
-          center: Math.abs((br.left + br.right) / 2 - (wrap.left + wrap.right) / 2), height: br.height, width: br.width,
-          bg: style.backgroundColor, overlap, inFooter: br.top > fr.top && br.bottom < fr.bottom,
-          floating: [...document.querySelectorAll('button')].some((b) => getComputedStyle(b).position === 'fixed'),
+          footerTop, allTop,
         }
       })
       if (SHOTS && path === '/') await page.screenshot({ path: `${SHOTS}/footer-${w}.png` })
       ok(/logo-white/.test(r.src) && r.meanL >= 250 && r.minL >= 250 && r.rightInk > 1000,
         `${path} merki hvítt (${r.src}, birta ${r.meanL}/${r.minL}, hjörtu ${r.rightInk} dílar), skarpt: ${r.natural}px mynd í ${Math.round(r.shown)}px`)
-      ok(r.center <= 1 && r.height >= 52 && !r.overlap && r.inFooter && !r.floating,
-        `${path} hnappur miðjaður (frávik ${r.center.toFixed(1)}px), ${r.height}px hár, ${Math.round(r.width)}px breiður, ${r.bg}, skarast ekki=${!r.overlap}, enginn fljótandi hnappur=${!r.floating}`)
-      await page.evaluate(() => [...document.querySelectorAll('footer.bg-night button')].find((b) => /Fara efst/.test(b.textContent)).click())
-      await sleep(1800)
-      const y = await page.evaluate(() => window.scrollY)
-      await page.emulateMediaFeatures([{ name: 'prefers-reduced-motion', value: 'reduce' }])
-      await page.evaluate(() => window.scrollTo(0, document.documentElement.scrollHeight))
-      await sleep(200)
-      await page.evaluate(() => [...document.querySelectorAll('footer.bg-night button')].find((b) => /Fara efst/.test(b.textContent)).click())
-      const yReduced = await page.evaluate(() => new Promise((res) => requestAnimationFrame(() => res(window.scrollY))))
-      ok(y === 0 && yReduced === 0, `${path} smellur fer efst (${y}); minni hreyfing stekkur strax (${yReduced})`)
+      ok(r.footerTop === 0 && r.allTop === 1, `${path} enginn „Fara efst“ í fæti, einn hnappur á síðunni (${r.allTop})`)
       await page.close()
     }
   }

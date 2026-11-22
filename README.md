@@ -187,8 +187,18 @@ Every article has a heart button, in the header next to the reading time and aga
 - If the service can't be reached, the button is hidden rather than showing a wrong number.
 - `npm run test:likes` tests the rules against a mock store. `BASE_URL=https://skreytumhus.netlify.app npm run check:likes` tests the real thing in two separate browsers and removes its test likes afterwards.
 
-## Footer: white logo and "Fara efst"
+## Footer logo
 
-- **Logo:** the footer uses `public/brand/logo-white.(webp|png)`, a transparent all-white version of the original logo, including the script "Skreytum", the serif "Hús" and the hearts. It was extracted from the owner's white logo file by keeping only the white lettering, without the dark glow. It is 1335 px wide, so it stays sharp on retina screens.
-- **Button:** a centred, light "Fara efst" button (52 px high) sits under the footer columns. It scrolls smoothly to the top, or jumps when the visitor prefers reduced motion. The earlier floating corner arrow was removed.
-- `npm run check:footer` checks both at 390, 768, 1440 and 1920 px: the logo pixels are white and the hearts are present, the button is centred and overlaps nothing, and clicking it returns to the top.
+The footer uses `public/brand/logo-white.(webp|png)`, a transparent all-white version of the original logo, including the script "Skreytum", the serif "Hús" and the hearts. It was extracted from the owner's white logo file by keeping only the white lettering, without the dark glow. It is 1335 px wide, so it stays sharp on retina screens. `npm run check:footer` checks it at 390, 768, 1440 and 1920 px.
+
+## "Fara efst" (floating)
+
+A round button with an up arrow, horizontally centred near the bottom of the screen: 50 px on phones and tablets, 58 px from 1024 px up. It is the only back-to-top button on the site.
+- It appears after about 400 px of scrolling and stays while you scroll. It scrolls smoothly to the top, or jumps when the visitor prefers reduced motion.
+- **It never blocks anything.** It hides while an ad or a small control (link, button, form field) would be under it, and while the image viewer or the mobile menu is open. It may sit over a corner of large clickable areas, such as gallery photos and article cards, which stay usable. There is no cookie notice on the site.
+
+## Previous / next article
+
+At the end of every article, "← Fyrri grein" and "Næsta grein →" link to the actual adjacent WordPress posts by publication date: one `before=` and one `after=` REST query, one post each. Each link shows the title, the date and a thumbnail when the post has one.
+- Two columns on desktop, stacked on mobile. A direction with no post (the oldest or newest article) is not shown.
+- `npm run check:nav` compares the links with WordPress directly, opens them, reloads, checks the oldest and newest posts, and tests the floating button at 390, 768, 1440 and 1920 px.

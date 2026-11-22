@@ -135,6 +135,8 @@ export async function fetchArticles(q: ArticleQuery = {}, signal?: AbortSignal):
     params.after = `${q.year - 1}-12-31T23:59:59`
     params.before = `${q.year + 1}-01-01T00:00:00`
   }
+  if (q.before) params.before = q.before
+  if (q.after) params.after = q.after
   const { data, total, totalPages } = await request<WPPost[]>('/wp/v2/posts', params, signal)
   return { items: data.map(toSummary), total, totalPages, page }
 }

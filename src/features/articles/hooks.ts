@@ -31,5 +31,15 @@ export function useRelated(id: number | undefined, categoryIds: number[] | undef
   return useArticles(id && cats.length ? { categories: cats, exclude: [id], perPage: 3 } : null)
 }
 
+/**
+ * Fyrri og næsta grein eftir birtingardegi, beint úr WordPress (`before`/`after`, ein færsla hvor).
+ * Fyrri = næsta eldri færsla, næsta = næsta nýrri. Engin færsla → engin tenging.
+ */
+export function useAdjacent(a: { id: number; date: string } | undefined) {
+  const previous = useArticles(a ? { before: a.date, order: 'desc', perPage: 1, exclude: [a.id] } : null)
+  const next = useArticles(a ? { after: a.date, order: 'asc', perPage: 1, exclude: [a.id] } : null)
+  return { previous, next }
+}
+
 export const articlePath = (slug: string) => `/greinar/${slug}`
 export const projectPath = (slug: string) => `/herbergisbreytingar/${slug}`

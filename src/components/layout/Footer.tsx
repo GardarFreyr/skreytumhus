@@ -3,7 +3,6 @@ import { ArrowUpRight, Mail } from 'lucide-react'
 import { mainNav, site } from '../../data/site'
 import { topics } from '../../data/taxonomy'
 import { Wordmark } from './Wordmark'
-import { BackToTopButton } from './BackToTopButton'
 
 export function Footer() {
   return (
@@ -52,11 +51,7 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="mt-16 flex justify-center lg:mt-20">
-          <BackToTopButton />
-        </div>
-
-        <div className="mt-12 flex flex-col gap-4 border-t border-ivory/15 pt-8 text-[12.5px] text-ivory/60 md:flex-row md:items-center md:justify-between">
+        <div className="mt-20 flex flex-col gap-4 border-t border-ivory/15 pt-8 text-[12.5px] text-ivory/60 md:flex-row md:items-center md:justify-between">
           <p>© {new Date().getFullYear()} Skreytumhús.is · Allur réttur áskilinn</p>
           <p className="max-w-xl md:text-right">
             Hönnunartillaga. Efni er lesið beint af{' '}

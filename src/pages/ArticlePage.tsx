@@ -11,6 +11,7 @@ import { AdCluster, AdRail } from '../components/ads/Ads'
 import { HERO_MEDIA_CLASS, SplitHero } from '../components/layout/SplitHero'
 import { ShareBar } from '../components/editorial/ShareBar'
 import { LikeButton } from '../components/editorial/LikeButton'
+import { ArticleNav } from '../components/editorial/ArticleNav'
 import { Img } from '../components/ui/Img'
 import { ErrorState } from '../components/ui/States'
 import NotFoundPage from './NotFoundPage'
@@ -151,6 +152,8 @@ function ArticleView({ a, variant }: { a: Article; variant: 'article' | 'project
             </a>
           </p>
         </footer>
+
+        <ArticleNav article={a} />
         </div>
         {/* Auglýsingar: hliðarstika á stórum skjám */}
         <AdRail className="hidden xl:block" />

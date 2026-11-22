@@ -62,4 +62,7 @@ export interface ArticleQuery {
   exclude?: number[]
   year?: number
   order?: 'desc' | 'asc'
+  /** Aðeins færslur birtar fyrir / eftir þessa dagsetningu (WordPress-staðartími, ISO) */
+  before?: string
+  after?: string
 }
