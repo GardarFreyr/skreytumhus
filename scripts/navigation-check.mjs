@@ -80,6 +80,17 @@ try {
   if (SHOTS) { await page.evaluate(() => document.querySelector('nav[aria-label="Fleiri greinar"]').scrollIntoView({ block: 'center' })); await sleep(600); await page.screenshot({ path: `${SHOTS}/nav-390.png` }) }
   await page.close()
 
+  // Færslur birtar á nákvæmlega sömu sekúndu mega ekki sleppast
+  for (const date of ['2010-12-01T08:04:00', '2013-02-15T12:00:00']) {
+    const tied = (await wp(`per_page=10&after=${new Date(Date.parse(date + 'Z') - 1000).toISOString().slice(0, 19)}&before=${new Date(Date.parse(date + 'Z') + 1000).toISOString().slice(0, 19)}`)).sort((x, y) => x.id - y.id)
+    page = await open(enc(tied[0].slug)); await waitNav(page)
+    const first = (await navLinks(page)).find((l) => l.rel === 'next')?.href
+    await page.goto(BASE + enc(tied[1].slug), { waitUntil: 'networkidle2' }); await waitNav(page)
+    const second = (await navLinks(page)).find((l) => l.rel === 'prev')?.href
+    ok(tied.length === 2 && first === enc(tied[1].slug) && second === enc(tied[0].slug), `sami birtingartími ${date}: ${tied[0].slug} ⇄ ${tied[1].slug}`)
+    await page.close()
+  }
+
   console.log('Fljótandi „Fara efst“:')
   for (const [w, h] of [[390, 844], [768, 1024], [1440, 900], [1920, 1080]]) {
     for (const path of [enc(mid.slug), '/']) {

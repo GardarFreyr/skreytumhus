@@ -10,10 +10,7 @@ import type { ArticleSummary } from '../../lib/types'
  * í WordPress, eftir birtingardegi. Átt sem á enga færslu er einfaldlega ekki sýnd.
  */
 export function ArticleNav({ article }: { article: { id: number; date: string } }) {
-  const { previous, next } = useAdjacent(article)
-  const prev = previous.status === 'success' ? previous.data.items[0] : undefined
-  const nxt = next.status === 'success' ? next.data.items[0] : undefined
-  const loading = previous.status === 'loading' || next.status === 'loading'
+  const { previous: prev, next: nxt, loading } = useAdjacent(article)
 
   if (!loading && !prev && !nxt) return null
   return (

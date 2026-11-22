@@ -31,14 +31,22 @@ export function useRelated(id: number | undefined, categoryIds: number[] | undef
   return useArticles(id && cats.length ? { categories: cats, exclude: [id], perPage: 3 } : null)
 }
 
+const shiftSeconds = (date: string, sec: number) => new Date(new Date(`${date}Z`).getTime() + sec * 1000).toISOString().slice(0, 19)
+/** Tímaröð: birtingardagur, og WordPress-ID ef tvær færslur eru birtar á sömu sekúndu */
+const compareChrono = (a: { id: number; date: string }, b: { id: number; date: string }) =>
+  a.date === b.date ? a.id - b.id : a.date < b.date ? -1 : 1
+
 /**
- * Fyrri og næsta grein eftir birtingardegi, beint úr WordPress (`before`/`after`, ein færsla hvor).
- * Fyrri = næsta eldri færsla, næsta = næsta nýrri. Engin færsla → engin tenging.
+ * Fyrri og næsta grein eftir birtingardegi, beint úr WordPress.
+ * Glugginn nær yfir sömu sekúndu (`before`/`after` eru ströng), svo færslur með
+ * nákvæmlega sama birtingartíma sleppast ekki. Engin færsla → engin tenging.
  */
-export function useAdjacent(a: { id: number; date: string } | undefined) {
-  const previous = useArticles(a ? { before: a.date, order: 'desc', perPage: 1, exclude: [a.id] } : null)
-  const next = useArticles(a ? { after: a.date, order: 'asc', perPage: 1, exclude: [a.id] } : null)
-  return { previous, next }
+export function useAdjacent(a: { id: number; date: string }) {
+  const older = useArticles({ before: shiftSeconds(a.date, 1), order: 'desc', perPage: 4, exclude: [a.id] })
+  const newer = useArticles({ after: shiftSeconds(a.date, -1), order: 'asc', perPage: 4, exclude: [a.id] })
+  const previous = older.data?.items.filter((x) => compareChrono(x, a) < 0).sort(compareChrono).at(-1)
+  const next = newer.data?.items.filter((x) => compareChrono(x, a) > 0).sort(compareChrono)[0]
+  return { previous, next, loading: older.status === 'loading' || newer.status === 'loading' }
 }
 
 export const articlePath = (slug: string) => `/greinar/${slug}`

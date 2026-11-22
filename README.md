@@ -199,6 +199,6 @@ A round button with an up arrow, horizontally centred near the bottom of the scr
 
 ## Previous / next article
 
-At the end of every article, "← Fyrri grein" and "Næsta grein →" link to the actual adjacent WordPress posts by publication date: one `before=` and one `after=` REST query, one post each. Each link shows the title, the date and a thumbnail when the post has one.
+At the end of every article, "← Fyrri grein" and "Næsta grein →" link to the actual adjacent WordPress posts by publication date, using `before=` and `after=` REST queries. Posts published in the same second (two pairs exist) are ordered by post ID, so none is skipped. Each link shows the title, the date and a thumbnail when the post has one.
 - Two columns on desktop, stacked on mobile. A direction with no post (the oldest or newest article) is not shown.
 - `npm run check:nav` compares the links with WordPress directly, opens them, reloads, checks the oldest and newest posts, and tests the floating button at 390, 768, 1440 and 1920 px.
