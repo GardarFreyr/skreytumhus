@@ -146,3 +146,28 @@ Pages are split into lazily loaded chunks with hashed names, and every deploy re
 - **Error boundary:** `RouteError` catches anything left over and keeps the header and footer. It offers "Endurhlaða" and "Á forsíðu".
 
 `npm run check:routes` loads every route directly and through the menu, and simulates a stale tab after a deploy.
+
+## Instagram feed (@skreytum_hus)
+
+The homepage section "Fylgstu með á Instagram" shows the 6 newest posts, or 4 when fewer are available, so the grid never has a lone tile. Each post links to the original on Instagram. Until the feed is connected, the section shows only the heading and the "Fylgja @skreytum_hus" button. It never shows invented posts or stand-in images.
+
+**How it works.** The feed uses Meta's official *Instagram API with Instagram Login*, which is free. All of this runs server-side in Netlify Functions, so the access token never reaches the browser.
+
+- `netlify/functions/instagram.mts`
+  - `/api/instagram` returns the feed as JSON.
+  - `/api/instagram/img/:id` returns each post's image from our own copy. Instagram's own image links expire, so the images are copied into Netlify Blobs.
+- `netlify/functions/instagram-refresh.mts` runs every hour. It fetches new posts and renews the token when it is more than 7 days old. Tokens expire after 60 days, so regular renewal keeps the feed connected.
+- **Caching:** the feed is kept for 30 minutes on the server and the Netlify CDN. The last successful feed is kept indefinitely in Netlify Blobs.
+- **When Instagram fails:** if the API errors or the token has expired, the last successful posts keep showing, with `status: "stale"`. With nothing saved yet, the section shows only the profile link.
+- `npm run test:instagram` tests these rules against a mocked API.
+
+**What Soffía needs to connect (one time):**
+1. @skreytum_hus must be a *professional* Instagram account (Creator or Business). Switching is free: Settings → Account type and tools.
+2. Create a Meta developer app at developers.facebook.com:
+   - app type **Business**;
+   - add the **Instagram** product, then choose **API setup with Instagram login**;
+   - under **Roles**, add @skreytum_hus as an **Instagram Tester**, then accept the invitation in the Instagram app or website.
+3. In the app's Instagram API setup, click **Generate token** next to @skreytum_hus and sign in as Soffía. Copy the long-lived token.
+4. In Netlify, go to Site configuration → Environment variables. Add `INSTAGRAM_ACCESS_TOKEN` with the token, scoped to Functions, then redeploy.
+
+After the redeploy, `https://skreytumhus.netlify.app/api/instagram` should return `"status":"ok"` with her posts. From then on, the feed updates and renews its token by itself.

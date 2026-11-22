@@ -11,6 +11,7 @@ import { MagazineGrid } from '../components/editorial/MagazineGrid'
 import { BeforeAfter } from '../components/editorial/BeforeAfter'
 import { Img, RATIO } from '../components/ui/Img'
 import { AdCluster, AdRail } from '../components/ads/Ads'
+import { InstagramSection } from '../components/editorial/InstagramSection'
 import { HERO_MEDIA_CLASS, SplitHero } from '../components/layout/SplitHero'
 import { PhotoCaption } from '../components/ui/PhotoCaption'
 import { CardSkeletons, ErrorState, SectionHeader } from '../components/ui/States'
@@ -70,6 +71,7 @@ export default function HomePage() {
       <Transformation article={byId.get(featuredTransformation.postId)} />
       <MeetSoffia />
       <TvTeaser byId={byId} loading={spotlight.status === 'loading'} />
+      <InstagramSection />
       <ArchiveBand total={total.data} />
     </>
   )

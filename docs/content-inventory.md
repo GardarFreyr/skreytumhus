@@ -30,7 +30,8 @@ The grouping is an editorial proposal for navigation only. Every original catego
 | Fact | Source |
 |---|---|
 | Name Soffía Dögg Garðarsdóttir, nickname Dossa, floristry background, blog started Sept 2010 | “Um mig” page (ID 10) |
-| E-mail soffiadogg@yahoo.com | Published on the Herbergisbreytingar page (ID 3648) |
+| E-mail soffia@skreytumhus.is | Confirmed by the site owner, Nov 2026 (replaces the older address on the Herbergisbreytingar page, ID 3648) |
+| Instagram @skreytum_hus | Reels Soffía links as her own from posts 95235 (“reel á Instagram með þessum vasa”) and 96003 (lamp video) are published by @skreytum_hus |
 | Quote “Ég hef verið að taka það að mér að breyta herbergjum…” | Page 3648 |
 | 26 archived makeover projects, in Soffía's own order | Links on page 3648 → `src/data/projects.ts` |
 | Before/after pair | Post 93421 “Kózý – fyrir og eftir…”; both photos and the quote come from that post |

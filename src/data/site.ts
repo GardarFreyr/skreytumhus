@@ -4,15 +4,16 @@ export const site = {
   tagline: 'Allt um heimilið',
   author: 'Soffía Dögg Garðarsdóttir',
   founded: '2010-09',
-  /** Birt opinberlega á síðunni „Herbergisbreytingar“ á skreytumhus.is */
-  email: 'soffiadogg@yahoo.com',
+  /** Staðfest af eiganda vefsins (nóvember 2026) – notað í öllum mailto-tenglum */
+  email: 'soffia@skreytumhus.is',
   liveUrl: 'https://www.skreytumhus.is/',
   tvSeriesUrl: 'https://www.visir.is/sjonvarp/s/319/skreytum-hus',
   /**
-   * Samfélagsmiðlar: engir tenglar á samfélagsmiðla fundust á skreytumhus.is.
-   * Bætið við hér þegar Soffía hefur staðfest slóðirnar — þá birtast þeir sjálfkrafa.
+   * Instagram: @skreytum_hus. Staðfest út frá skreytumhus.is: reels sem Soffía vísar á sem
+   * sín eigin (færslur 95235 og 96003) eru birt af þessum reikningi. Sjá docs/content-inventory.md.
    */
-  social: [] as { label: string; href: string }[],
+  instagram: { handle: 'skreytum_hus', url: 'https://www.instagram.com/skreytum_hus/' },
+  social: [{ label: 'Instagram', href: 'https://www.instagram.com/skreytum_hus/' }] as { label: string; href: string }[],
 } as const
 
 export const mainNav = [
