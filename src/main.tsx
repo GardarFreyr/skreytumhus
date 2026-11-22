@@ -7,9 +7,15 @@ import '@fontsource/cormorant-garamond/400-italic.css'
 import '@fontsource-variable/dm-sans/index.css'
 import './index.css'
 import { router } from './router'
+import { installPreloadRecovery, preloadPages } from './lib/lazyPage'
+
+installPreloadRecovery()
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <RouterProvider router={router} />
   </StrictMode>,
 )
+
+// Sækja allar síður fyrirfram svo opinn flipi virki líka eftir nýja útgáfu
+preloadPages()

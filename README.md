@@ -135,3 +135,14 @@ Consecutive image blocks in a post form one gallery (`ArticleBody.tsx`). Rows ar
 - **Mobile:** one image per row.
 
 Each image's width is proportional to its own aspect ratio, so the images in a row share one height and are not cropped. `npm run check:gallery` verifies this on real posts (3, 4, 5, 7, 10 and 11-image galleries) and also tests the topic search with Icelandic words.
+
+## Page loading after deploys
+
+Pages are split into lazily loaded chunks with hashed names, and every deploy replaces them. A tab opened before a deploy would otherwise request chunks that no longer exist, giving "Failed to fetch dynamically imported module". Four things guard against that:
+
+- **Real 404s for missing assets:** `netlify.toml` returns a real 404 for missing `/assets/*` files instead of `index.html`. `index.html` itself is never cached.
+- **Preloading:** `src/lib/lazyPage.ts` preloads every page chunk (~45 KB in total) once the browser is idle, so an open tab already holds every page.
+- **Retry and reload:** if a chunk still fails, it is retried once, then the page reloads once to pick up the new version. A 30-second guard in `sessionStorage` prevents reload loops. `vite:preloadError` is handled the same way.
+- **Error boundary:** `RouteError` catches anything left over and keeps the header and footer. It offers "Endurhlaða" and "Á forsíðu".
+
+`npm run check:routes` loads every route directly and through the menu, and simulates a stale tab after a deploy.

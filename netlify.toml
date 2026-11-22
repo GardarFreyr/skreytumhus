@@ -5,6 +5,14 @@
 [build.environment]
   NODE_VERSION = "22"
 
+# Skrár sem vantar í /assets/ (t.d. gamlar JS-skrár eftir nýja útgáfu) fá raunverulegt 404,
+# ekki index.html – annars reynir vafrinn að keyra HTML sem JS-einingu og síðan verður auð.
+# (Gildir aðeins ef skráin er ekki til; til staðar skrár eru alltaf afgreiddar beint.)
+[[redirects]]
+  from = "/assets/*"
+  to = "/404.html"
+  status = 404
+
 # SPA: allar leiðir í index.html
 [[redirects]]
   from = "/*"
@@ -23,3 +31,9 @@
   for = "/assets/*"
   [headers.values]
     Cache-Control = "public, max-age=31536000, immutable"
+
+# index.html má aldrei geymast: nýr flipi á alltaf að fá nýjustu skráaheitin
+[[headers]]
+  for = "/index.html"
+  [headers.values]
+    Cache-Control = "no-cache"
