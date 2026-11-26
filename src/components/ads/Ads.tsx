@@ -1,18 +1,21 @@
 import { useState } from 'react'
 import { dorma, husgagnahollin, slippfelagid, type Ad } from '../../data/ads'
+import { features } from '../../data/features'
 
 /**
- * Ein auglýsing: merkt „Auglýsing“, í ramma, opnast í nýjum flipa með rel="sponsored".
+ * Ein auglýsing (merkimiðinn „Auglýsing“ stjórnast af features.adLabels), í ramma, opnast í nýjum flipa með rel="sponsored".
  * Borðarnir eru 200 px breiðir frá auglýsendum og eru aldrei stækkaðir umfram það (svo þeir verði ekki óskýrir).
  */
 export function AdBanner({ ad, className = '' }: { ad: Ad; className?: string }) {
   const [src] = useState(() => ad.images[Math.floor(Math.random() * ad.images.length)])
   return (
     <figure className={`m-0 w-full max-w-[202px] ${className}`}>
-      <figcaption className="mb-2 flex items-center justify-between text-[10px] font-medium uppercase tracking-[0.22em] text-muted">
-        <span>Auglýsing</span>
-        <span className="normal-case tracking-normal">{ad.advertiser}</span>
-      </figcaption>
+      {features.adLabels && (
+        <figcaption className="mb-2 flex items-center justify-between text-[10px] font-medium uppercase tracking-[0.22em] text-muted">
+          <span>Auglýsing</span>
+          <span className="normal-case tracking-normal">{ad.advertiser}</span>
+        </figcaption>
+      )}
       <a
         href={ad.href}
         target="_blank"
