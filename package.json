@@ -15,7 +15,8 @@
     "test:likes": "node scripts/likes-test.mts",
     "check:likes": "node scripts/likes-ui-check.mjs",
     "check:footer": "node scripts/footer-check.mjs",
-    "check:nav": "node scripts/navigation-check.mjs"
+    "check:nav": "node scripts/navigation-check.mjs",
+    "check:hero": "node scripts/hero-title-check.mjs"
   },
   "dependencies": {
     "@fontsource-variable/dm-sans": "^5.2.6",

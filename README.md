@@ -202,3 +202,21 @@ A round button with an up arrow, horizontally centred near the bottom of the scr
 At the end of every article, "← Fyrri grein" and "Næsta grein →" link to the actual adjacent WordPress posts by publication date, using `before=` and `after=` REST queries. Posts published in the same second (two pairs exist) are ordered by post ID, so none is skipped. Each link shows the title, the date and a thumbnail when the post has one.
 - Two columns on desktop, stacked on mobile. A direction with no post (the oldest or newest article) is not shown.
 - `npm run check:nav` compares the links with WordPress directly, opens them, reloads, checks the oldest and newest posts, and tests the floating button at 390, 768, 1440 and 1920 px.
+
+## Article titles in the hero
+
+Every WordPress title in a hero (article page, project/no-image header, homepage lead story) is rendered by
+`src/components/editorial/ArticleTitle.tsx` + `.article-title` in `index.css`, so no future post can overflow
+under the featured image:
+
+- Font size is `clamp()` against the **column's own width** (`container-type: inline-size`, `cqi`) and the
+  title's **longest word** (`--title-chars`). Normal titles keep the original sizes; a title with a very long
+  Icelandic compound word scales down just enough to fit (floor 1.9rem).
+- `hyphens: auto` (`lang="is"`) where the browser has Icelandic hyphenation; `overflow-wrap: anywhere` as the
+  guarantee everywhere else (Chrome has no Icelandic dictionary). Line breaks are allowed after `/`.
+- Never truncated; the hero grid (`SplitHero`, `min-w-0` columns, `items-center`, no fixed height) grows
+  vertically and stacks text above the image below `lg`.
+- WordPress captions/figures with inline fixed widths are capped at the column width.
+
+Test: `npm run check:hero` (real WordPress titles — shortest, longest, longest compound words — plus a test-only
+synthetic extreme title, at 390/768/1024/1280/1440/1920 px; `BASE_URL=` for the live site).

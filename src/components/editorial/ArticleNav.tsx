@@ -56,7 +56,7 @@ function Item({ a, dir }: { a: ArticleSummary; dir: 'prev' | 'next' }) {
             <><ArrowLeft size={14} aria-hidden className="transition-transform duration-300 group-hover:-translate-x-1 motion-reduce:transition-none" /> Fyrri grein</>
           )}
         </p>
-        <p className="mt-2.5 line-clamp-2 font-display text-[1.45rem] leading-[1.15] text-charcoal underline decoration-transparent decoration-1 underline-offset-4 transition-[text-decoration-color] duration-300 group-hover:decoration-taupe md:text-[1.6rem]">
+        <p className="mt-2.5 font-display [overflow-wrap:anywhere] hyphens-auto text-[1.45rem] leading-[1.15] text-charcoal underline decoration-transparent decoration-1 underline-offset-4 transition-[text-decoration-color] duration-300 group-hover:decoration-taupe md:text-[1.6rem]">
           {a.title}
         </p>
         <p className="mt-1.5 text-[13px] text-muted"><time dateTime={a.date}>{formatDate(a.date)}</time></p>

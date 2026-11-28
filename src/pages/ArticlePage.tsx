@@ -12,6 +12,7 @@ import { HERO_MEDIA_CLASS, SplitHero } from '../components/layout/SplitHero'
 import { ShareBar } from '../components/editorial/ShareBar'
 import { LikeButton } from '../components/editorial/LikeButton'
 import { ArticleNav } from '../components/editorial/ArticleNav'
+import { ArticleTitle } from '../components/editorial/ArticleTitle'
 import { Img } from '../components/ui/Img'
 import { ErrorState } from '../components/ui/States'
 import NotFoundPage from './NotFoundPage'
@@ -101,7 +102,7 @@ function ArticleView({ a, variant }: { a: Article; variant: 'article' | 'project
             <header data-hero className="wrap mt-6 lg:mt-8">
               <div className={`mx-auto max-w-4xl ${isProject ? 'text-center' : ''}`}>
                 {eyebrow}
-                <h1 className="display mt-5 text-[clamp(2.6rem,5.4vw,5.2rem)]">{a.title}</h1>
+                <ArticleTitle title={a.title} layout="wide" className="mt-5" />
                 {meta}
                 {sponsored}
               </div>
@@ -123,7 +124,7 @@ function ArticleView({ a, variant }: { a: Article; variant: 'article' | 'project
           >
             <header>
               {eyebrow}
-              <h1 className="display mt-5 text-[clamp(2.5rem,4.4vw,4.6rem)]">{a.title}</h1>
+              <ArticleTitle title={a.title} layout="split" className="mt-5" />
               {meta}
               {sponsored}
             </header>

@@ -14,6 +14,7 @@ import { AdCluster, AdRail } from '../components/ads/Ads'
 import { InstagramSection } from '../components/editorial/InstagramSection'
 import { features } from '../data/features'
 import { HERO_MEDIA_CLASS, SplitHero } from '../components/layout/SplitHero'
+import { ArticleTitle } from '../components/editorial/ArticleTitle'
 import { PhotoCaption } from '../components/ui/PhotoCaption'
 import { CardSkeletons, ErrorState, SectionHeader } from '../components/ui/States'
 import { topics } from '../data/taxonomy'
@@ -99,9 +100,12 @@ function Hero({ state }: { state: ReturnType<typeof useArticles> }) {
       {a ? (
         <div className="animate-rise">
           <Meta article={a} />
-          <h1 className="display mt-5 text-[clamp(2.7rem,5vw,5.4rem)]">
-            <Link to={`/greinar/${a.slug}`} className="hover:text-taupe-ink">{a.title}</Link>
-          </h1>
+          <ArticleTitle
+            title={a.title}
+            layout="home"
+            className="mt-5"
+            render={(t) => <Link to={`/greinar/${a.slug}`} className="hover:text-taupe-ink">{t}</Link>}
+          />
           {a.excerpt && <p className="mt-6 max-w-[34rem] text-[17px] leading-[1.7] text-muted">{truncate(a.excerpt, 220)}</p>}
           <Link to={`/greinar/${a.slug}`} className="btn btn-dark mt-8">Lesa greinina <ArrowRight size={16} aria-hidden /></Link>
         </div>

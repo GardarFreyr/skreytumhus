@@ -58,6 +58,23 @@
   .eyebrow { @apply text-[11px] font-medium uppercase tracking-[0.24em] text-muted; }
   .display { @apply font-display font-normal leading-[0.98] tracking-[-0.01em]; }
 
+  /* Titlar greina í haus (ArticleTitle.tsx): stærð eftir breidd dálks og lengsta orði,
+     aldrei út fyrir dálkinn. --title-chars = stafafjöldi lengsta orðs (lágm. 12).
+     --fit = stærð þar sem lengsta orðið fyllir dálkinn (~0,47em á staf í Cormorant). */
+  .article-title-box { container-type: inline-size; min-width: 0; }
+  .article-title {
+    --fit: calc(100cqi / (var(--title-chars, 12) * 0.5));
+    font-size: clamp(min(var(--min), max(var(--floor), var(--fit))), min(var(--fluid), var(--fit)), var(--max));
+    overflow-wrap: anywhere;
+    hyphens: auto;
+    hyphenate-limit-chars: 10 4 4;
+    max-width: 100%;
+  }
+  /* Sömu stærðir og áður; --floor er neðsta mörk fyrir titla með mjög löngu orði */
+  .article-title--split { --min: 2.5rem; --fluid: 4.4vw; --max: 4.6rem; --floor: 1.9rem; }
+  .article-title--wide  { --min: 2.6rem; --fluid: 5.4vw; --max: 5.2rem; --floor: 1.9rem; }
+  .article-title--home  { --min: 2.7rem; --fluid: 5vw;   --max: 5.4rem; --floor: 1.9rem; }
+
   /* Mynd í ramma: myndir Soffíu eru oft með rifnum hvítum kanti; ramminn klippir hann af */
   .frame { @apply relative overflow-hidden bg-cream; }
   .frame > img { @apply absolute inset-0 h-full w-full object-cover; transform: scale(1.07); transition: transform 1.4s var(--ease-editorial); }
@@ -120,6 +137,8 @@
 .prose-sh { @apply text-ink; font-size: 1.0625rem; line-height: 1.8; }
 @media (min-width: 768px) { .prose-sh { font-size: 1.125rem; } }
 .prose-sh > * + * { margin-top: 1.4em; }
+/* WordPress setur föst breidd (style="width:510px") á myndatexta – má aldrei vera breiðara en dálkurinn */
+.prose-sh .wp-caption, .prose-sh figure, .prose-sh iframe, .prose-sh table { max-width: 100% !important; }
 .prose-sh p { margin: 0; }
 .prose-sh p + p { margin-top: 1.1em; }
 .prose-sh h2, .prose-sh h3, .prose-sh h4 { @apply font-display text-charcoal; font-weight: 500; line-height: 1.15; margin-top: 2em; }
